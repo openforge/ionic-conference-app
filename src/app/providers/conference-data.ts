@@ -17,12 +17,12 @@ export class ConferenceData {
   tracks: Observable<Track[]> ;
   track: Observable<Track> ;
 
-  sessionsCollection: AngularFirestoreCollection<Session[]>;
-  sessions: Observable<Session[]> ;
-  session: Observable<Session> ;
+  sessionsCollection: AngularFirestoreCollection<any[]>;
+  sessions: Observable<any[]> ;
+  session: Observable<any> ;
 
-  partsOfDayCollection: AngularFirestoreCollection<PartOfDay[]>;
-  partsOfDay: Observable<PartOfDay[]>;
+  partsOfDayCollection: AngularFirestoreCollection<any[]>;
+  partsOfDay: Observable<any[]>;
 
   mapsCollection: AngularFirestoreCollection<any[]>;
   maps: Observable<any[]>;
@@ -41,18 +41,18 @@ export class ConferenceData {
       'maps', ref => ref.orderBy('name', 'asc'));
   }
 
-  getPartsOfDay(): Observable<PartOfDay[]> {
+  getPartsOfDay(): Observable<any[]> {
     this.partsOfDay = this.partsOfDayCollection.snapshotChanges()
     .pipe(map(response => {
       return response.map(action => {
-        const data = action.payload.doc.data() as PartOfDay;
+        const data = action.payload.doc.data() as any;
         return data;
       });
     }));
     return this.partsOfDay ;
   }
 
-  getSessionInPeriod(start, end): Observable<Session[]> {
+  getSessionInPeriod(start, end): Observable<any[]> {
     this.sessionsCollection = this.afs.collection(
       'sessions', ref => ref.where('date', '>=', start)
                             .where('date', '<=', end)
@@ -60,7 +60,7 @@ export class ConferenceData {
     this.sessions = this.sessionsCollection.snapshotChanges()
     .pipe(map(response => {
       return response.map(action => {
-        const data = action.payload.doc.data() as Session;
+        const data = action.payload.doc.data() as any;
         data.id = action.payload.doc.id;
         return data;
       });
