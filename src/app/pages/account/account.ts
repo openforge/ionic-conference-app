@@ -15,6 +15,7 @@ export class AccountPage implements AfterViewInit {
   users: User[];
   user: User;
   succeed: boolean;
+  loadImage: boolean;
   jobDescription: string;
 
   constructor(public alertCtrl: AlertController,
@@ -25,13 +26,26 @@ export class AccountPage implements AfterViewInit {
     this.userProvider.getUsers().subscribe(
       users => this.users = users
     );
-    this.userProvider.getUser().then(
-      user => this.user = user
-    );
+    this.userProvider.getUserId().then(id => {
+      this.userProvider.getUserById(id).then(data => { this.user = data; });
+    });
   }
 
-  updatePicture() {
-    console.log('Clicked to update picture');
+  updatePicture(path: string) {
+    const oldUrl = this.user.avatar;
+    const id = this.user.id;
+
+    this.user.avatar = path;
+    this.userProvider.updateUser(this.user);
+
+    this.loadImage = false;
+    this.user = null;
+    this.userProvider.getUserById(id).then(data => { this.user = data; });
+    this.userProvider.deleteUrl(oldUrl);
+  }
+
+  onExit() {
+    this.loadImage = false;
   }
 
   // Present an alert with the current username populated

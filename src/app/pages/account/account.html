@@ -8,12 +8,13 @@
 </ion-header>
 
 <ion-content class="outer-content">
-  <div padding-top text-center *ngIf="user">
-    <img src="https://www.gravatar.com/avatar?d=mm&s=140" alt="avatar">
+  <div padding-top text-center *ngIf="user && !loadImage">
+    <img *ngIf="user.avatar" [src]="user.avatar" alt="avatar">
+    <img *ngIf="!user.avatar" src="https://www.gravatar.com/avatar?d=mm&s=140" alt="avatar">
     <h2>{{user.username}}</h2>
 
     <ion-list inset>
-      <ion-item (click)="updatePicture()">Update Picture</ion-item>
+      <ion-item (click)="loadImage=true">Update Picture</ion-item>
       <ion-item (click)="changeUsername()">Change Username</ion-item>
       <ion-item (click)="changeEmail()">Change Email</ion-item>
       <ion-item (click)="changePassword()">Change Password</ion-item>
@@ -22,4 +23,10 @@
     </ion-list>
     <p *ngIf="succeed">{{ jobDescription }}</p>
   </div>
+
+  <upload-image *ngIf="user && loadImage"
+        [username]="user.username"
+        (updateUser)="updatePicture($event)"
+        (exit)="onExit()">
+  </upload-image>
 </ion-content>

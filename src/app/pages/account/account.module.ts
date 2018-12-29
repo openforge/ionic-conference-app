@@ -4,6 +4,9 @@ import { IonicModule } from '@ionic/angular';
 
 import { AccountPage } from './account';
 import { AccountPageRoutingModule } from './account-routing.module';
+import { UploadImageComponent } from '../upload-image/upload-image.component';
+import { FileSizePipe } from '../../pipe/file-size.pipe';
+import { DropZoneDirective } from '../../directive/drop-zone.directive';
 
 @NgModule({
   imports: [
@@ -13,6 +16,9 @@ import { AccountPageRoutingModule } from './account-routing.module';
   ],
   declarations: [
     AccountPage,
+    UploadImageComponent,
+    FileSizePipe,
+    DropZoneDirective
   ]
 })
 export class AccountModule { }

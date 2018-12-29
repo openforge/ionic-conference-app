@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { User } from '../models';
+import { AngularFireStorage } from 'angularfire2/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +17,12 @@ export class UserData {
   usersCollection: AngularFirestoreCollection<User> ;
   userDoc: AngularFirestoreDocument<User> ;
   users: Observable<User[]> ;
-  user: Observable<User> ;
   _favorites: string[] = [];
   HAS_LOGGED_IN = 'hasLoggedIn';
   HAS_SEEN_TUTORIAL = 'hasSeenTutorial';
 
   constructor(private afs: AngularFirestore,
+              private fireStorage: AngularFireStorage,
               public events: Events,
               public storage: Storage) {
     this.usersCollection = this.afs.collection(
@@ -90,6 +91,26 @@ export class UserData {
       .then(() => {
         user.id = id;
         this.storage.set('user', user);
+    });
+  }
+
+  deleteUrl(oldUrl) {
+    if (oldUrl) {
+      this.fireStorage.storage.refFromURL(oldUrl).delete();
+    }
+  }
+
+  getUserById(id: string) {
+    return this.usersCollection.doc(id).ref.get()
+      .then(doc => {
+        const user = doc.data() as User;
+        user.id = id;
+        if (user.avatar) {
+          this.fireStorage.ref(user.avatar).getDownloadURL().subscribe(url => {
+            user.avatar = url;
+          });
+        }
+      return user;
     });
   }
 

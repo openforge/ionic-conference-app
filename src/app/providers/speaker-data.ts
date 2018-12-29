@@ -18,7 +18,7 @@ export class SpeakerData {
   speaker: Observable<Speaker> ;
 
   constructor(private afs: AngularFirestore,
-              private storage: AngularFireStorage) {
+              private fireStorage: AngularFireStorage) {
     this.speakersCollection = this.afs.collection(
       'speakers', ref => ref.orderBy('name', 'asc'));
     }
@@ -29,7 +29,7 @@ export class SpeakerData {
         return response.map(action => {
           const data = action.payload.doc.data() as Speaker;
           data.id = action.payload.doc.id;
-          this.storage.ref(data.profilePic).getDownloadURL().subscribe(url => {
+          this.fireStorage.ref(data.profilePic).getDownloadURL().subscribe(url => {
             data.profilePic = url;
           });
           return data;
@@ -42,7 +42,7 @@ export class SpeakerData {
     return this.speakersCollection.doc(id).ref.get()
       .then(doc => {
         const speaker = doc.data() as Speaker;
-        this.storage.ref(speaker.profilePic).getDownloadURL().subscribe(url => {
+        this.fireStorage.ref(speaker.profilePic).getDownloadURL().subscribe(url => {
           speaker.profilePic = url;
         });
       return speaker;

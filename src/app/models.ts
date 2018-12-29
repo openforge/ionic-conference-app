@@ -41,6 +41,7 @@ export interface Map {
 
 export interface User {
   id?: string;
+  avatar?: string;
   username: string;
   password: string;
   email: string;
