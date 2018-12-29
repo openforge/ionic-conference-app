@@ -9,6 +9,7 @@ import { User } from '../../models';
   selector: 'page-schedule-filter',
   templateUrl: 'schedule-filter.html',
   styleUrls: ['./schedule-filter.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ScheduleFilterPage implements AfterViewInit {
   user: User;

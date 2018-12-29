@@ -32,6 +32,7 @@ export class LoginPage implements OnInit {
       if (user) {
         if (user.password === this.password) {
           this.userData.login(user);
+          // this.router.navigateByUrl('/app/tabs/schedule')
           this.router.navigateByUrl('/app/tabs/(schedule:schedule)');
         } else {
           alert('Invalid password. Try again.');

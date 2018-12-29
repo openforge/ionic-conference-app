@@ -1,6 +1,6 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, IonList, LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, List, LoadingController, ModalController, ToastController } from '@ionic/angular';
 
 import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
 import { ScheduleTrackPage } from '../schedule-track/schedule-track';
@@ -12,10 +12,11 @@ import { User, Session, PartOfDay } from '../../models';
   selector: 'page-schedule',
   templateUrl: 'schedule.html',
   styleUrls: ['./schedule.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SchedulePage implements OnInit {
   // Gets a reference to the list element
-  @ViewChild('scheduleList') scheduleList: IonList;
+  @ViewChild('scheduleList') scheduleList: List;
 
   user: User;
   queryText = '';
@@ -184,7 +185,13 @@ export class SchedulePage implements OnInit {
     }
   }
 
-  async addFavorite(slidingItem: HTMLIonItemSlidingElement, sessionData: any) {
+  goToSessionDetail(sessionData: any) {
+    // go to the session detail page
+    // and pass in the session data
+    this.router.navigateByUrl(`app/tabs/(schedule:session/${sessionData.id})`);
+  }
+
+async addFavorite(slidingItem: HTMLIonItemSlidingElement, sessionData: any) {
     if (this.userProvider.hasFavorite(sessionData.name)) {
       // woops, they already favorited it! What shall we do!?
       // prompt them to remove it

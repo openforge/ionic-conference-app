@@ -1,7 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { TabsPage } from './tabs-page';
+
+import { AboutPage } from '../about/about';
+import { MapPage } from '../map/map';
 import { SchedulePage } from '../schedule/schedule';
+import { SessionDetailPage } from '../session-detail/session-detail';
+import { SpeakerDetailPage } from '../speaker-detail/speaker-detail';
+import { SpeakerListPage } from '../speaker-list/speaker-list';
 
 
 const routes: Routes = [
@@ -9,58 +16,44 @@ const routes: Routes = [
     path: 'tabs',
     component: TabsPage,
     children: [
+      // tab one
       {
         path: 'schedule',
-        children: [
-          {
-            path: '',
-            component: SchedulePage,
-          },
-          {
-            path: 'session/:sessionId',
-            loadChildren: '../session-detail/session-detail.module#SessionDetailModule'
-          }
-        ]
+        component: SchedulePage,
+        outlet: 'schedule'
       },
+      {
+        path: 'session/:sessionId',
+        component: SessionDetailPage,
+        outlet: 'schedule'
+      },
+      // tab two
       {
         path: 'speakers',
-        children: [
-          {
-            path: '',
-            loadChildren: '../speaker-list/speaker-list.module#SpeakerListModule'
-          },
-          {
-            path: 'session/:sessionId',
-            loadChildren: '../session-detail/session-detail.module#SessionDetailModule'
-          },
-          {
-            path: 'speaker-details/:speakerId',
-            loadChildren: '../speaker-detail/speaker-detail.module#SpeakerDetailModule'
-          }
-        ]
+        component: SpeakerListPage,
+        outlet: 'speakers'
       },
+      {
+        path: 'session/:sessionId',
+        component: SessionDetailPage,
+        outlet: 'speakers'
+      },
+      {
+        path: 'speaker-details/:speakerId',
+        component: SpeakerDetailPage,
+        outlet: 'speakers'
+      },
+      // tab three
       {
         path: 'map',
-        children: [
-          {
-            path: '',
-            loadChildren: '../map/map.module#MapModule'
-          }
-        ]
+        component: MapPage,
+        outlet: 'map'
       },
+      // tab four
       {
         path: 'about',
-        children: [
-          {
-            path: '',
-            loadChildren: '../about/about.module#AboutModule'
-          }
-        ]
-      },
-      {
-        path: '',
-        redirectTo: '/app/tabs/schedule',
-        pathMatch: 'full'
+        component: AboutPage,
+        outlet: 'about'
       }
     ]
   }
@@ -71,4 +64,3 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class TabsPageRoutingModule { }
-
