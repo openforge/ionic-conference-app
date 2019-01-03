@@ -37,6 +37,7 @@ export class AppComponent implements OnInit {
     }
   ];
   loggedIn = false;
+  keyword: string;
 
   constructor(
     private events: Events,
@@ -72,6 +73,9 @@ export class AppComponent implements OnInit {
   updateLoggedInStatus(loggedIn: boolean) {
     setTimeout(() => {
       this.loggedIn = loggedIn;
+      this.userData.getUser().then(user => {
+        this.keyword = user ? user.username : '' ;
+      });
     }, 300);
   }
 
@@ -97,6 +101,10 @@ export class AppComponent implements OnInit {
     this.userData.logout().then(() => {
       return this.openTutorial();
     });
+  }
+
+  onSetup() {
+    this.router.navigateByUrl('/setup/tabs/(sessions:sessions)');
   }
 
   openTutorial() {
