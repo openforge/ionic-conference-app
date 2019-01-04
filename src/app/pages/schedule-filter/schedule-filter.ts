@@ -39,7 +39,10 @@ export class ScheduleFilterPage implements AfterViewInit {
   applyFilters() {
     // update user's trackFilter
     this.user.trackFilter = this.trackFilter;
-    this.userProvider.updateUser(this.user);
+    // update loggin user and then update database file.
+    this.userProvider.setUser(this.user).then(() => {
+      this.userProvider.updateUser(this.user);
+    });
 
     // Pass back a new array of track names to exclude
     const excludedTrackNames = this.trackFilter.filter(c => !c.isChecked).map(c => c.name);

@@ -9,6 +9,7 @@ import { map } from 'rxjs/operators';
 
 import { User } from '../models';
 import { AngularFireStorage } from 'angularfire2/storage';
+import { CompileShallowModuleMetadata } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -87,10 +88,30 @@ export class UserData {
     const id = user.id;
     delete(user.id);
     this.userDoc = this.afs.doc(`users/${id}`);
-    this.userDoc.update(user)
-      .then(() => {
-        user.id = id;
-        this.storage.set('user', user);
+    this.userDoc.update(user);
+  }
+
+  updateTracksInUser(newName: string, oldName: string) {
+    this.getUsers().subscribe(users => {
+      users.forEach(user => {
+        const idx = user.trackFilter.findIndex(track => track.name === oldName);
+        if (idx > -1) {
+          user.trackFilter[idx].name = newName;
+          this.updateUser(user);
+        }
+      });
+    });
+  }
+
+  removeTrackInUser(name) {
+    this.getUsers().subscribe(users => {
+      users.forEach(user => {
+        const idx = user.trackFilter.findIndex(track => track.name === name);
+        if (idx > -1) {
+          user.trackFilter.splice(idx, 1);
+          this.updateUser(user);
+        }
+      });
     });
   }
 

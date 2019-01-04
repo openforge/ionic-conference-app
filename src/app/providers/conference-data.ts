@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserData } from './user-data';
 import { Track, Session, PartOfDay } from '../models';
+import { SessionData } from './session-data';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,7 @@ export class ConferenceData {
   constructor(
     public http: HttpClient,
     public userProvider: UserData,
+    public sessionProvider: SessionData,
     private afs: AngularFirestore) {
     this.tracksCollection = this.afs.collection(
       'tracks', ref => ref.orderBy('name', 'asc'));
@@ -115,6 +117,27 @@ export class ConferenceData {
         });
       }));
     return this.tracks ;
+  }
+
+  updateTrack(track: Track, newName: string) {
+    const oldName = track.name;
+    track.name = newName;
+    const id = track.id;
+    delete(track.id);
+    this.trackDoc = this.afs.doc(`tracks/${id}`);
+    this.trackDoc.update(track).then(() => {
+      this.sessionProvider.updateTrackInSessions(newName, oldName);
+      this.userProvider.updateTracksInUser(newName, oldName);
+    });
+  }
+
+  removeTrack(track: Track) {
+    const id = track.id;
+    this.trackDoc = this.afs.doc(`tracks/${id}`);
+    this.trackDoc.delete().then(() => {
+      this.sessionProvider.removeTrackInSession(track.name);
+      this.userProvider.removeTrackInUser(track.name);
+    });
   }
 
   getMap() {

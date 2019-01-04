@@ -4,9 +4,21 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Tracks</ion-title>
+    <ion-buttons slot="end">
+      <ion-item (click)="onAddNew()">Add a New</ion-item>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
 
+  <ion-list>
+    <ion-item *ngFor="let track of tracks">
+      <ion-label>{{track.name}}</ion-label>
+      <ion-buttons>
+        <ion-button color="secondary" (click)="changeName(track)">Edit</ion-button>
+        <ion-icon name="trash" color="danger" (click)="onRemove(track)"></ion-icon>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
 </ion-content>

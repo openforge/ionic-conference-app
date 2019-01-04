@@ -36,7 +36,7 @@ export class AccountPage implements AfterViewInit {
     const id = this.user.id;
 
     this.user.avatar = path;
-    this.userProvider.updateUser(this.user);
+    this.updateUserData(this.user);
 
     this.loadImage = false;
     this.user = null;
@@ -63,8 +63,12 @@ export class AccountPage implements AfterViewInit {
             if (this.isTheValueUsed(data.username)) {
               alert(data.username + ' was used already. Try another.');
             } else {
+              // update after getter user's avatar as string.
+              this.userProvider.getUser().then(user => {
+                user.username = data.username;
+                this.updateUserData(user);
+              });
               this.user.username = data.username;
-              this.userProvider.updateUser(this.user);
               this.succeed = true;
               this.jobDescription = 'Username has been changed.';
             }
@@ -78,7 +82,8 @@ export class AccountPage implements AfterViewInit {
           value: this.user.username,
           placeholder: 'new username'
         }
-      ]
+      ],
+      backdropDismiss: false
     });
     await changeForm.present();
   }
@@ -95,8 +100,11 @@ export class AccountPage implements AfterViewInit {
             if (this.isTheValueUsed(data.email)) {
               alert(data.email + ' was used already. Try another.');
             } else {
-              this.user.email = data.email;
-              this.userProvider.updateUser(this.user);
+              // update after getter user's avatar as string.
+              this.userProvider.getUser().then(user => {
+                this.user.email = data.email;
+                this.updateUserData(user);
+              });
               this.succeed = true;
               this.jobDescription = 'Email has been changed.';
             }
@@ -110,7 +118,8 @@ export class AccountPage implements AfterViewInit {
           value: this.user.email,
           placeholder: 'new email'
         }
-      ]
+      ],
+      backdropDismiss: false
     });
     await changeForm.present();
   }
@@ -131,8 +140,11 @@ export class AccountPage implements AfterViewInit {
             } else if (data.newPW !== data.confirmPW) {
               alert('New password does not match Confirm password.');
             } else {
-              this.user.password = data.newPW;
-              this.userProvider.updateUser(this.user);
+              // update after getter user's avatar as string.
+              this.userProvider.getUser().then(user => {
+                this.user.password = data.newPW;
+                this.updateUserData(user);
+              });
               this.succeed = true;
               this.jobDescription = 'Password has been changed.';
             }
@@ -155,7 +167,8 @@ export class AccountPage implements AfterViewInit {
           name: 'currentPW',
           placeholder: 'current password'
         }
-      ]
+      ],
+      backdropDismiss: false
     });
     await changeForm.present();
   }
@@ -167,6 +180,13 @@ export class AccountPage implements AfterViewInit {
     }
     return this.users.find(
       user => user.email.toLowerCase() === value.toLowerCase());
+  }
+
+  updateUserData(user) {
+    // update logged user info after update user's database
+    this.userProvider.setUser(user).then(() => {
+      this.userProvider.updateUser(user);
+    });
   }
 
   logout() {

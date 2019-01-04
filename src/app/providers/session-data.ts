@@ -42,9 +42,35 @@ export class SessionData {
       });
   }
 
-  updateSession(id: string, session: Session) {
+  updateTrackInSessions(newName: string, oldName: string) {
+    this.getSessions().subscribe(sessions => {
+      sessions.forEach(session => {
+        const idx = session.tracks.findIndex(track => track === oldName);
+        if (idx > -1) {
+          session.tracks[idx] = newName;
+          this.updateSession(session);
+        }
+      });
+    });
+  }
+
+  removeTrackInSession(name: string) {
+    this.getSessions().subscribe(sessions => {
+      sessions.forEach(session => {
+        const idx = session.tracks.findIndex(track => track === name);
+        if (idx > -1) {
+          session.tracks.splice(idx, 1);
+          this.updateSession(session);
+        }
+      });
+    });
+  }
+
+  updateSession(session: Session): Promise<any> {
+    const id = session.id;
+    delete(session.id);
     this.sessionDoc = this.afs.doc(`sessions/${id}`);
-    this.sessionDoc.update(session);
+    return this.sessionDoc.update(session);
   }
 
   deleteSession(session: Session) {
