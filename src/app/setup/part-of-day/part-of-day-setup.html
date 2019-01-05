@@ -4,9 +4,42 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>    
     <ion-title>Part of Day</ion-title>
+    <ion-buttons slot="end">
+      <ion-item (click)="makeNewPOD()">Create a New Set</ion-item>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
+  <ion-row class="table-header" style="border-bottom: groove;">
+    <ion-col>
+      <ion-label>Index</ion-label>
+    </ion-col>
+    <ion-col>
+      <ion-label>Description</ion-label>
+    </ion-col>
+    <ion-col>
+      <ion-label>From</ion-label>
+    </ion-col>
+    <ion-col>
+      <ion-label>To</ion-label>
+    </ion-col>
+  </ion-row>
 
+  <ion-item *ngFor="let POD of PODs">
+    <ion-row class="table-item">
+      <ion-col>
+        <ion-label>{{ POD.indexKey }}</ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-label>{{ POD.name }}</ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-label>{{ POD.timeFrom }}</ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-label>{{ POD.timeTo }}</ion-label>
+      </ion-col>
+    </ion-row>
+  </ion-item>
 </ion-content>
