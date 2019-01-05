@@ -9,7 +9,6 @@ import { map } from 'rxjs/operators';
 
 import { User } from '../models';
 import { AngularFireStorage } from 'angularfire2/storage';
-import { CompileShallowModuleMetadata } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -89,6 +88,24 @@ export class UserData {
     delete(user.id);
     this.userDoc = this.afs.doc(`users/${id}`);
     this.userDoc.update(user);
+  }
+
+  addTrackInUser(name) {
+    const track = { name: name, isChecked: false };
+    this.getUsers().subscribe(users => {
+      users.forEach(user => {
+        const idx = user.trackFilter.findIndex(item => item.name === name);
+        if (idx < 0) {
+          user.trackFilter.push(track);
+          this.updateUser(user);
+        }
+      });
+      // const len = users.length;
+      // for (let i=0; i<len; i++) {
+      //   users[i].trackFilter.push(track);
+      //   this.updateUser(users[i]);
+      // }
+    });
   }
 
   updateTracksInUser(newName: string, oldName: string) {

@@ -42,8 +42,35 @@ export class TracksSetup {
 
   ionViewDidLeave() {}
 
-  onAddNew() {
-    console.log('add a new track');
+  async addNewTrack() {
+    const addForm = await this.alertCtrl.create({
+      header: 'Add a Track',
+      buttons: [
+        'Cancel',
+        {
+          text: 'Ok',
+          handler: (data: any) => {
+            data.newName = data.newName.trim();
+            if (this.isTheValueUsed(data.newName)) {
+              alert(data.newName + ' was used already. Try another.');
+            } else {
+              this.confData.addTrack({ name: data.newName });
+              this.succeed = true;
+              this.jobDescription = 'A new Track has been added.';
+            }
+          }
+        }
+      ],
+      inputs: [
+        {
+          type: 'text',
+          name: 'newName',
+          placeholder: 'new name here'
+        }
+      ],
+      backdropDismiss: false
+    });
+    await addForm.present();
   }
 
   async changeName(track) {

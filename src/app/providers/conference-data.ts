@@ -119,6 +119,12 @@ export class ConferenceData {
     return this.tracks ;
   }
 
+  addTrack(track: Track) {
+    this.tracksCollection.add(track).then(res => {
+      this.userProvider.addTrackInUser(track.name);
+    });
+  }
+
   updateTrack(track: Track, newName: string) {
     const oldName = track.name;
     track.name = newName;
