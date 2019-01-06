@@ -17,7 +17,7 @@ const routes: Routes = [
       // tab one
       { path: 'sessions', component: SessionsSetup, outlet: 'sessions' },
       // tab two
-      { path: 'speakers', component: SpeakersSetup, outlet: 'speakers' },
+      { path: 'speaker', component: SpeakersSetup, outlet: 'speaker' },
       // tab three
       { path: 'tracks',   component: TracksSetup,   outlet: 'tracks'   },
       // tab four
