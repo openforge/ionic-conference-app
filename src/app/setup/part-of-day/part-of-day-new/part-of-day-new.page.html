@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button text="" defaultHref="/setup/tabs/(partofday:partofday)"></ion-back-button>
+    </ion-buttons> 
+    <ion-title>New Set of POD</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label>Description: </ion-label>
+      <ion-input [(ngModel)]="title"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>From &nbsp;&nbsp;&nbsp;{{ timeFrom }}&nbsp;&nbsp;&nbsp;</ion-label>
+      <ion-label>To &nbsp;&nbsp;&nbsp;</ion-label>
+      <ion-datetime type="text" [(ngModel)]="timeTo" displayFormat="HH:mm"
+            (ngModelChange)=checkTimeTo($event) name="timeTo"></ion-datetime>
+    </ion-item>
+    <ion-buttons slot="end">
+      <ion-button color="danger" (click)="cancelInput()">Cancel</ion-button>
+      <ion-button color="secondary" (click)="saveInput()">Add POD</ion-button>
+    </ion-buttons> 
+  </ion-list>  
+
+  <br>
+
+  <ion-row class="table-header" style="border-bottom: groove;">
+    <ion-col>
+      <ion-label>Index</ion-label>
+    </ion-col>
+    <ion-col>
+      <ion-label>Description</ion-label>
+    </ion-col>
+    <ion-col>
+      <ion-label>From</ion-label>
+    </ion-col>
+    <ion-col>
+      <ion-label>To</ion-label>
+    </ion-col>
+  </ion-row>
+
+  <ion-item *ngFor="let POD of newPODs">
+    <ion-row class="table-item">
+      <ion-col>
+        <ion-label>{{ POD.indexKey }}</ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-label>{{ POD.name }}</ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-label>{{ POD.timeFrom }}</ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-label>{{ POD.timeTo }}</ion-label>
+      </ion-col>
+    </ion-row>
+  </ion-item>
+</ion-content>

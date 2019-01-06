@@ -57,6 +57,7 @@ export interface Support {
 }
 
 export interface PartOfDay {
+  id?: string;
   indexKey?: number;
   name: string;    // morning, afternoon, evening, overnight
   timeFrom: string;

@@ -6,7 +6,7 @@ import { AngularFirestore,
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserData } from './user-data';
-import { Track, Session, PartOfDay } from '../models';
+import { Track, Session, PartOfDay, Map } from '../models';
 import { SessionData } from './session-data';
 
 @Injectable({
@@ -18,15 +18,16 @@ export class ConferenceData {
   tracks: Observable<Track[]> ;
   track: Observable<Track> ;
 
-  sessionsCollection: AngularFirestoreCollection<any[]>;
-  sessions: Observable<any[]> ;
-  session: Observable<any> ;
+  sessionsCollection: AngularFirestoreCollection<Session>;
+  sessions: Observable<Session[]> ;
+  session: Observable<Session> ;
 
-  partsOfDayCollection: AngularFirestoreCollection<any[]>;
-  partsOfDay: Observable<any[]>;
+  partsOfDayCollection: AngularFirestoreCollection<PartOfDay>;
+  partOfDayDoc: AngularFirestoreDocument<PartOfDay>;
+  partsOfDay: Observable<PartOfDay[]>;
 
-  mapsCollection: AngularFirestoreCollection<any[]>;
-  maps: Observable<any[]>;
+  mapsCollection: AngularFirestoreCollection<Map>;
+  maps: Observable<Map[]>;
 
   data: any;
 
@@ -43,18 +44,19 @@ export class ConferenceData {
       'maps', ref => ref.orderBy('name', 'asc'));
   }
 
-  getPartsOfDay(): Observable<any[]> {
+  getPartsOfDay(): Observable<PartOfDay[]> {
     this.partsOfDay = this.partsOfDayCollection.snapshotChanges()
     .pipe(map(response => {
       return response.map(action => {
-        const data = action.payload.doc.data() as any;
+        const data = action.payload.doc.data() as PartOfDay;
+        data.id = action.payload.doc.id;
         return data;
       });
     }));
     return this.partsOfDay ;
   }
 
-  getSessionInPeriod(start, end): Observable<any[]> {
+  getSessionInPeriod(start, end): Observable<Session[]> {
     this.sessionsCollection = this.afs.collection(
       'sessions', ref => ref.where('date', '>=', start)
                             .where('date', '<=', end)
@@ -62,7 +64,7 @@ export class ConferenceData {
     this.sessions = this.sessionsCollection.snapshotChanges()
     .pipe(map(response => {
       return response.map(action => {
-        const data = action.payload.doc.data() as any;
+        const data = action.payload.doc.data() as Session;
         data.id = action.payload.doc.id;
         return data;
       });
@@ -146,11 +148,29 @@ export class ConferenceData {
     });
   }
 
+  updatePartOfDay(pod: PartOfDay) {
+    const id = pod.id;
+    delete(pod.id);
+    this.partOfDayDoc = this.afs.doc(`partsOfDay/${id}`);
+    this.partOfDayDoc.update(pod);
+  }
+
+  changePartsOfDay(PODs: PartOfDay[], newPODs: PartOfDay[]) {
+    PODs.forEach(pod => {
+      const podDoc = this.afs.doc(`partsOfDay/${pod.id}`);
+      podDoc.delete();
+    });
+
+    newPODs.forEach(pod => {
+      this.partsOfDayCollection.add(pod);
+    });
+  }
+
   getMap() {
     this.maps = this.mapsCollection.snapshotChanges()
     .pipe(map(response => {
       return response.map(action => {
-        const data = action.payload.doc.data() as any;
+        const data = action.payload.doc.data() as Map;
         return data;
       });
     }));

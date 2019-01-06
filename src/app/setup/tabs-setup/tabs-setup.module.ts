@@ -13,6 +13,7 @@ import { TracksSetupModule } from '../tracks/tracks.module';
 import { MapSetupModule } from '../map/map.module';
 import { SupportSetupModule } from '../support/support.module';
 import { PartOfDaySetupModule } from '../part-of-day/part-of-day.module';
+import { PartOfDayNewPageModule } from '../part-of-day/part-of-day-new/part-of-day-new.module';
 
 const routes: Routes = [
   {
@@ -30,10 +31,13 @@ const routes: Routes = [
     SpeakersSetupModule,
     TracksSetupModule,
     PartOfDaySetupModule,
+    PartOfDayNewPageModule,
     MapSetupModule,
     SupportSetupModule,
     TabsSetupRoutingModule
   ],
-  declarations: [TabsSetupPage]
+  declarations: [
+    TabsSetupPage
+  ]
 })
 export class TabsSetupPageModule {}
