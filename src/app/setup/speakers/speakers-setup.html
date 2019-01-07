@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>Speakers</ion-title>
     <ion-buttons slot="end">
-      <ion-item [href]="'setup/tabs/(speaker:speaker-edit/'+ 'new'">Add a New</ion-item>
+      <ion-item [href]="'setup/tabs/(speaker:edit/'+ 'New'">Add a New</ion-item>
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
@@ -16,11 +16,14 @@
 <ion-content>
   <ion-item-group *ngFor="let speaker of speakers">
     <ion-item [hidden]="!speaker.name.includes(queryText)"
-              [href]="'setup/tabs/(speaker:speaker-edit/'+ speaker.id">
+              [href]="'setup/tabs/(speaker:edit/'+ speaker.id">
       <ion-avatar slot="start">
         <img [src]="speaker.profilePic" alt="Speaker profile pic">
       </ion-avatar>
-      {{speaker.name}} ({{ speaker.phone }})    
+      {{speaker.name}} ({{ speaker.phone }})
+      <ion-buttons slot="end">
+        <ion-icon name="trash" color="danger" (click)="onConfirmToRemove(speaker)"></ion-icon>
+      </ion-buttons>
     </ion-item>
   </ion-item-group>
 </ion-content>

@@ -106,10 +106,27 @@ export class TracksSetup {
     await changeForm.present();
   }
 
-  onRemove(track) {
-    if (confirm(`Are you sure to delete '${track.name}'?`)) {
-      this.confData.removeTrack(track);
-    }
+  async onConfirmToRemove(track: Track) {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirm Remove',
+      message: `Are you sure to remove ${track.name}?`,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Remove',
+          handler: () => {
+            this.confData.removeTrack(track);
+          }
+        }
+      ],
+      backdropDismiss: false
+    });
+    await alert.present();
   }
 
   isTheValueUsed(name) {

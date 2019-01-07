@@ -1,0 +1,61 @@
+<ion-header>
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ion-back-button text="" defaultHref="/setup/tabs/(speaker:speaker)"></ion-back-button>
+      </ion-buttons> 
+      <ion-title>{{mode}} Speaker</ion-title>
+      <ion-buttons slot="end">
+        <ion-item (click)=onExit()>Cancel</ion-item>
+        <ion-item (click)="onSubmit()">Save</ion-item>
+      </ion-buttons>    
+    </ion-toolbar>
+  </ion-header>
+  
+<ion-content padding>
+  <ion-list *ngIf="speaker && !loadImage">
+    <div padding-top text-center
+        (click)="this.loadImage = (this.mode === 'New') ? false : true">
+      <img *ngIf="speaker.profilePic" [src]="speaker.profilePic" alt="avatar">
+      <img *ngIf="!speaker.profilePic" src="https://www.gravatar.com/avatar?d=mm&s=140" alt="avatar">
+    </div>
+    <ion-item>
+      <ion-label>Name : </ion-label>
+      <ion-input [(ngModel)]="speaker.name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Email : </ion-label>
+      <ion-input type="email" [(ngModel)]="speaker.email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Phone : </ion-label>
+      <ion-input type="phone" [(ngModel)]="speaker.phone"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Location : </ion-label>
+      <ion-input [(ngModel)]="speaker.location"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>twitter : </ion-label>
+      <ion-input [(ngModel)]="speaker.twitter"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>github : </ion-label>
+      <ion-input [(ngModel)]="speaker.github"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>instagram : </ion-label>
+      <ion-input [(ngModel)]="speaker.instagram"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>About : </ion-label>
+      <ion-input [(ngModel)]="speaker.about"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <upload-img *ngIf="speaker && loadImage"
+        [name]="speaker.name"
+        (updateImage)="updatePicture($event)"
+        (exit)="onExit()">
+  </upload-img>
+
+</ion-content>

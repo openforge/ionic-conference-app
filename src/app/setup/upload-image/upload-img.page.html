@@ -1,0 +1,26 @@
+<div class="title">Upload Speaker's Avatar</div>
+<div class="dropzone" 
+    appDropzone
+    (hovered)="toggleHover($event)"
+    (dropped)="startUpload($event)"
+    [class.hovering]="isHovering">
+
+  <h3>Image Drop Zone</h3>
+  <p>Drag and Drop a File</p>
+  <div class="file">
+    <input type="file" (change)="startUpload($event.target.files)">
+  </div>
+  
+</div>
+<button (click)="exit.emit()">Cancel</button>
+<div *ngIf="percentage | async as pct">
+  <progress class="progress is-info" 
+        [value]="pct" 
+        max="100">        
+  </progress>
+  {{ pct | number }}%
+</div>
+
+<div *ngIf="(snapshot | async) as snap">
+  {{ snap.bytesTransferred | filesize }} of {{ snap.totalBytes | filesize }} 
+</div>

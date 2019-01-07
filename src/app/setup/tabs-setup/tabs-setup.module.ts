@@ -14,6 +14,7 @@ import { MapSetupModule } from '../map/map.module';
 import { SupportSetupModule } from '../support/support.module';
 import { PartOfDaySetupModule } from '../part-of-day/part-of-day.module';
 import { PartOfDayNewPageModule } from '../part-of-day/part-of-day-new/part-of-day-new.module';
+import { SpeakerEditPageModule } from '../speakers/speaker-edit/speaker-edit.module';
 
 const routes: Routes = [
   {
@@ -29,6 +30,7 @@ const routes: Routes = [
     IonicModule,
     SessionsSetupModule,
     SpeakersSetupModule,
+    SpeakerEditPageModule,
     TracksSetupModule,
     PartOfDaySetupModule,
     PartOfDayNewPageModule,

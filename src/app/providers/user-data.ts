@@ -100,11 +100,6 @@ export class UserData {
           this.updateUser(user);
         }
       });
-      // const len = users.length;
-      // for (let i=0; i<len; i++) {
-      //   users[i].trackFilter.push(track);
-      //   this.updateUser(users[i]);
-      // }
     });
   }
 

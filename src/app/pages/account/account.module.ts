@@ -5,20 +5,20 @@ import { IonicModule } from '@ionic/angular';
 import { AccountPage } from './account';
 import { AccountPageRoutingModule } from './account-routing.module';
 import { UploadImageComponent } from '../upload-image/upload-image.component';
-import { FileSizePipe } from '../../pipe/file-size.pipe';
 import { DropZoneDirective } from '../../directive/drop-zone.directive';
+import { FileSizePipe } from '../../pipe/file-size.pipe';
 
 @NgModule({
   imports: [
     CommonModule,
     IonicModule,
-    AccountPageRoutingModule
+    AccountPageRoutingModule,
   ],
   declarations: [
     AccountPage,
     UploadImageComponent,
-    FileSizePipe,
-    DropZoneDirective
+    DropZoneDirective,
+    FileSizePipe
   ]
 })
 export class AccountModule { }

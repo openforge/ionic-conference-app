@@ -29,9 +29,11 @@ export class SpeakerData {
         return response.map(action => {
           const data = action.payload.doc.data() as Speaker;
           data.id = action.payload.doc.id;
-          this.fireStorage.ref(data.profilePic).getDownloadURL().subscribe(url => {
-            data.profilePic = url;
-          });
+          if (data.profilePic) {
+            this.fireStorage.ref(data.profilePic).getDownloadURL().subscribe(url => {
+              data.profilePic = url ? url : '';
+            });
+          }
           return data;
         });
       }));
@@ -42,15 +44,24 @@ export class SpeakerData {
     return this.speakersCollection.doc(id).ref.get()
       .then(doc => {
         const speaker = doc.data() as Speaker;
-        this.fireStorage.ref(speaker.profilePic).getDownloadURL().subscribe(url => {
-          speaker.profilePic = url;
-        });
-      return speaker;
+        if (speaker.profilePic) {
+          this.fireStorage.ref(speaker.profilePic).getDownloadURL().subscribe(url => {
+            speaker.profilePic = url;
+          });
+        }
+        return speaker;
       });
   }
 
   addNewSpeaker(speaker: Speaker) {
+    console.log(speaker);
     this.speakersCollection.add(speaker) ;
+  }
+
+  removeSpeaker(speaker: Speaker) {
+    const id = speaker.id;
+    this.speakerDoc = this.afs.doc(`speakers/${id}`);
+    this.speakerDoc.delete();
   }
 
   updateSpeaker(speaker: Speaker) {
@@ -79,5 +90,29 @@ export class SpeakerData {
         });
       }
     );
+  }
+
+  getUrl(path): Observable<string> {
+    return this.fireStorage.ref(path).getDownloadURL();
+  }
+
+  deleteUrl(oldUrl) {
+    if (oldUrl) {
+      this.fireStorage.storage.refFromURL(oldUrl).delete();
+    }
+  }
+
+  getSpeakerById(id: string) {
+    return this.speakersCollection.doc(id).ref.get()
+      .then(doc => {
+        const speaker = doc.data() as Speaker;
+        speaker.id = id;
+        if (speaker.profilePic) {
+          this.fireStorage.ref(speaker.profilePic).getDownloadURL().subscribe(url => {
+            speaker.profilePic = url;
+          });
+        }
+      return speaker;
+    });
   }
 }

@@ -9,6 +9,7 @@ import { MapSetup } from '../map/map-setup';
 import { SupportSetup } from '../support/support-setup';
 import { PartOfDaySetup } from '../part-of-day/part-of-day-setup';
 import { PartOfDayNewPage } from '../part-of-day/part-of-day-new/part-of-day-new.page';
+import { SpeakerEditPage } from '../speakers/speaker-edit/speaker-edit.page';
 
 const routes: Routes = [
   {
@@ -18,6 +19,7 @@ const routes: Routes = [
       { path: 'sessions', component: SessionsSetup, outlet: 'sessions' },
       // tab two
       { path: 'speaker', component: SpeakersSetup, outlet: 'speaker' },
+      { path: 'edit/:id', component: SpeakerEditPage, outlet: 'speaker' },
       // tab three
       { path: 'tracks',   component: TracksSetup,   outlet: 'tracks'   },
       // tab four

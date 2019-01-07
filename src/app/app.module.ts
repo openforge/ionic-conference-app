@@ -33,6 +33,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
   ],
   declarations: [AppComponent],
   providers: [InAppBrowser, SplashScreen, StatusBar],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
