@@ -66,11 +66,12 @@ export class SessionData {
     });
   }
 
-  updateSession(session: Session): Promise<any> {
+  updateSession(session: Session) {
     const id = session.id;
     delete(session.id);
     this.sessionDoc = this.afs.doc(`sessions/${id}`);
-    return this.sessionDoc.update(session);
+    this.sessionDoc.update(session);
+    session.id = id;
   }
 
   deleteSession(session: Session) {

@@ -27,14 +27,14 @@ export class SpeakerData {
     this.speakers = this.speakersCollection.snapshotChanges()
       .pipe(map(response => {
         return response.map(action => {
-          const data = action.payload.doc.data() as Speaker;
-          data.id = action.payload.doc.id;
-          if (data.profilePic) {
-            this.fireStorage.ref(data.profilePic).getDownloadURL().subscribe(url => {
-              data.profilePic = url ? url : '';
+          const speaker = action.payload.doc.data() as Speaker;
+          speaker.id = action.payload.doc.id;
+          if (speaker.profilePic) {
+            this.fireStorage.ref(speaker.profilePic).getDownloadURL().subscribe(url => {
+              speaker.profilePic = url ? url : '';
             });
           }
-          return data;
+          return speaker;
         });
       }));
     return this.speakers ;
@@ -65,9 +65,11 @@ export class SpeakerData {
   }
 
   updateSpeaker(speaker: Speaker) {
-    this.speakerDoc = this.afs.doc(`speakers/${speaker.id}`);
+    const id = speaker.id;
+    this.speakerDoc = this.afs.doc(`speakers/${id}`);
     delete(speaker.id);
     this.speakerDoc.update(speaker);
+    speaker.id = id;
   }
 
   getSpeakerName(id: string) {
