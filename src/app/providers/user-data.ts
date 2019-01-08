@@ -88,6 +88,8 @@ export class UserData {
     delete(user.id);
     this.userDoc = this.afs.doc(`users/${id}`);
     this.userDoc.update(user);
+    user.id = id;
+    this.setUser(user);
   }
 
   addTrackInUser(name) {

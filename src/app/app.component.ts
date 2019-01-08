@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
     }
   ];
   loggedIn = false;
-  keyword: string;
+  keyword = '';
 
   constructor(
     private events: Events,
@@ -53,7 +53,9 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.checkLoginStatus();
+    this.userData.isLoggedIn().then(loggedIn => {
+      this.updateLoggedInStatus(loggedIn);
+    });
     this.listenForLoginEvents();
   }
 
@@ -61,12 +63,6 @@ export class AppComponent implements OnInit {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-    });
-  }
-
-  checkLoginStatus() {
-    return this.userData.isLoggedIn().then(loggedIn => {
-      return this.updateLoggedInStatus(loggedIn);
     });
   }
 

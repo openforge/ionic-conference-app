@@ -1,15 +1,15 @@
-import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { MenuController, Slides } from '@ionic/angular';
 
 import { Storage } from '@ionic/storage';
+import { UserData } from '../../providers/user-data';
 
 @Component({
   selector: 'page-tutorial',
   templateUrl: 'tutorial.html',
   styleUrls: ['./tutorial.scss'],
-  encapsulation: ViewEncapsulation.None
 })
 export class TutorialPage {
   showSkip = true;
@@ -18,6 +18,7 @@ export class TutorialPage {
 
   constructor(
     public menu: MenuController,
+    private userProvider: UserData,
     public router: Router,
     public storage: Storage
   ) {}
@@ -35,6 +36,11 @@ export class TutorialPage {
   }
 
   ionViewWillEnter() {
+    this.userProvider.isLoggedIn().then(res => {
+      if (res) {
+        this.router.navigateByUrl('/app/tabs/(schedule:schedule)');
+      }
+    });
     this.storage.get('ion_did_tutorial').then(res => {
       if (res === true) {
         this.router.navigateByUrl('/app/tabs/schedule');

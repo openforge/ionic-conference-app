@@ -1,7 +1,8 @@
 <ion-tabs>
 
   <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="schedule" href="/app/tabs/(schedule:schedule)">
+    <ion-tab-button tab="schedule" [disabled]="!loggedIn"
+                    href="/app/tabs/(schedule:schedule)">
       <ion-icon name="calendar"></ion-icon>
       <ion-label>Schedule</ion-label>
     </ion-tab-button>
@@ -11,7 +12,7 @@
       <ion-label>Speakers</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="map" href="/app/tabs/(map:map)">
+    <ion-tab-button tab="map" [disabled]="!loggedIn" href="/app/tabs/(map:map)">
       <ion-icon name="map"></ion-icon>
       <ion-label>Map</ion-label>
     </ion-tab-button>

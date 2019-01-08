@@ -5,6 +5,7 @@ import { ActionSheetController, AlertController } from '@ionic/angular';
 
 import { Speaker } from '../../models';
 import { SpeakerData } from '../../providers/speaker-data';
+import { UserData } from '../../providers/user-data';
 
 @Component({
   selector: 'page-speaker-list',
@@ -20,6 +21,7 @@ export class SpeakerListPage {
     public alertCtrl: AlertController,
     private speakerProvider: SpeakerData,
     public inAppBrowser: InAppBrowser,
+    private userProvider: UserData,
     public router: Router
   ) {}
 
@@ -27,7 +29,33 @@ export class SpeakerListPage {
     this.speakerProvider.getSpeakers().subscribe(
       speakers => { this.speakers = speakers; }
     );
+    // this.userProvider.isLoggedIn().then(loggedIn => {
+    //   if (loggedIn) { this.askLogIn(); }
+    // })
   }
+
+  // async askLogIn() {
+  //   const askLogInForm = await this.alertCtrl.create({
+  //     header: 'Recommendation',
+  //     subHeader: 'You need to login to access all features.',
+  //     buttons: [
+  //       {
+  //         text: 'Login Now',
+  //         handler: () => {
+  //           this.router.navigate(['/login']);
+  //         }
+  //       },
+  //       {
+  //         text: 'Login later',
+  //         handler: () => {
+
+  //         }
+  //       },
+  //     ],
+  //     backdropDismiss: false
+  //   });
+  //   await askLogInForm.present();
+  // }
 
   goToSpeakerTwitter(speaker: Speaker) {
     this.inAppBrowser.create(

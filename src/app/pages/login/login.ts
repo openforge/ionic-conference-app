@@ -14,6 +14,7 @@ import { User } from '../../models';
 export class LoginPage implements OnInit {
   username: '';
   password: '' ;
+  submitted = false;
   users: User[];
 
   constructor(public userData: UserData,
@@ -27,12 +28,12 @@ export class LoginPage implements OnInit {
   }
 
   onLogin(form: NgForm) {
+    this.submitted = true;
     if (form.valid) {
       const user = this.findUser(this.username.toLowerCase().trim());
       if (user) {
         if (user.password === this.password) {
           this.userData.login(user);
-          // this.router.navigateByUrl('/app/tabs/schedule')
           this.router.navigateByUrl('/app/tabs/(schedule:schedule)');
         } else {
           alert('Invalid password. Try again.');
