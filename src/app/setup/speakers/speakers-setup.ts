@@ -1,26 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SpeakerData } from '../../providers/speaker-data';
 import { Speaker } from '../../models';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { UserData } from '../../providers/user-data';
 
 @Component({
   selector: 'speakers-setup',
   templateUrl: './speakers-setup.html',
   styleUrls: ['./speakers-setup.scss'],
 })
-export class SpeakersSetup {
+export class SpeakersSetup implements OnInit {
 
   speakers: Speaker[];
   queryText = '';
 
   constructor(private speakerProvider: SpeakerData,
+              private userProvider: UserData,
               private alertCtrl: AlertController,
               private router: Router) { }
 
-  ionViewDidEnter() {
-    this.speakerProvider.getSpeakers().subscribe(data => {
-      this.speakers = data;
+  ngOnInit() {
+    this.userProvider.getUser().then(user => {
+      if ( !user || user.username !== 'admin') {
+        this.router.navigateByUrl('/tutorial');
+      } else {
+        this.speakerProvider.getSpeakers().subscribe(data => {
+          this.speakers = data;
+        });
+      }
     });
   }
 

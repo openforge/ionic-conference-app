@@ -1,15 +1,15 @@
 <ion-header>
-    <ion-toolbar color="primary">
-      <ion-buttons slot="start">
-        <ion-back-button text="" defaultHref="/setup/tabs/(speaker:speaker)"></ion-back-button>
-      </ion-buttons> 
-      <ion-title>{{mode}} Speaker</ion-title>
-      <ion-buttons slot="end">
-        <ion-item (click)=onExit()>Cancel</ion-item>
-        <ion-item (click)="onSubmit()">Save</ion-item>
-      </ion-buttons>    
-    </ion-toolbar>
-  </ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button text="" defaultHref="/setup/tabs/(speaker:speaker)"></ion-back-button>
+    </ion-buttons> 
+    <ion-title>{{mode}} Speaker</ion-title>
+    <ion-buttons slot="end">
+      <ion-item (click)=onExit()>Cancel</ion-item>
+      <ion-item (click)="onSubmit()">Save</ion-item>
+    </ion-buttons>    
+  </ion-toolbar>
+</ion-header>
   
 <ion-content padding>
   <ion-list *ngIf="speaker && !loadImage">

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserData } from '../../providers/user-data';
 import { Router } from '@angular/router';
 import { Track, Session } from '../../models';
@@ -11,7 +11,7 @@ import { AlertController } from '@ionic/angular';
   templateUrl: './tracks-setup.html',
   styleUrls: ['./tracks-setup.scss'],
 })
-export class TracksSetup {
+export class TracksSetup implements OnInit {
 
   tracks: Track[];
   sessions: Session[];
@@ -19,28 +19,26 @@ export class TracksSetup {
   succeed = false;
   jobDescription: string;
 
-  constructor(private userData: UserData,
-              private sessionData: SessionData,
-              private confData: ConferenceData,
+  constructor(private userProvider: UserData,
+              private sessionProvider: SessionData,
+              private confProvider: ConferenceData,
               private router: Router,
               private alertCtrl: AlertController) { }
 
-  ionViewWillEnter() {
-    this.userData.getUser().then(user => {
+  ngOnInit() {
+    this.userProvider.getUser().then(user => {
       if ( !user || user.username !== 'admin') {
         this.router.navigateByUrl('/tutorial');
       } else {
-        this.confData.getTracks().subscribe(data => {
+        this.confProvider.getTracks().subscribe(data => {
           this.tracks = data;
-          this.sessionData.getSessions().subscribe(session => {
+          this.sessionProvider.getSessions().subscribe(session => {
             this.sessions = session;
           });
         });
       }
     });
   }
-
-  ionViewDidLeave() {}
 
   async addNewTrack() {
     const addForm = await this.alertCtrl.create({
@@ -54,7 +52,7 @@ export class TracksSetup {
             if (this.isTheValueUsed(data.newName)) {
               alert(data.newName + ' was used already. Try another.');
             } else {
-              this.confData.addTrack({ name: data.newName });
+              this.confProvider.addTrack({ name: data.newName });
               this.succeed = true;
               this.jobDescription = 'A new Track has been added.';
             }
@@ -87,7 +85,7 @@ export class TracksSetup {
             if (this.isTheValueUsed(data.newName)) {
               alert(data.newName + ' was used already. Try another.');
             } else {
-              this.confData.updateTrack(track, data.newName );
+              this.confProvider.updateTrack(track, data.newName );
               this.succeed = true;
               this.jobDescription = 'Name has been changed.';
             }
@@ -120,7 +118,7 @@ export class TracksSetup {
         {
           text: 'Remove',
           handler: () => {
-            this.confData.removeTrack(track);
+            this.confProvider.removeTrack(track);
           }
         }
       ],

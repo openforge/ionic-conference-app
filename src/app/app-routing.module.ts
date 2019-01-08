@@ -34,7 +34,8 @@ const routes: Routes = [
   {
     path: 'setup',
     loadChildren: './setup/tabs-setup/tabs-setup.module#TabsSetupPageModule'
-  }
+  },
+  { path: 'session-edit', loadChildren: './setup/sessions/session-edit/session-edit.module#SessionEditPageModule' }
 ];
 
 @NgModule({

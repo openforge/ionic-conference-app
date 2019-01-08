@@ -10,6 +10,7 @@ import { SupportSetup } from '../support/support-setup';
 import { PartOfDaySetup } from '../part-of-day/part-of-day-setup';
 import { PartOfDayNewPage } from '../part-of-day/part-of-day-new/part-of-day-new.page';
 import { SpeakerEditPage } from '../speakers/speaker-edit/speaker-edit.page';
+import { SessionEditPage } from '../sessions/session-edit/session-edit.page';
 
 const routes: Routes = [
   {
@@ -17,6 +18,7 @@ const routes: Routes = [
     children: [
       // tab one
       { path: 'sessions', component: SessionsSetup, outlet: 'sessions' },
+      { path: 'update/:id', component: SessionEditPage, outlet: 'sessions'},
       // tab two
       { path: 'speaker', component: SpeakersSetup, outlet: 'speaker' },
       { path: 'edit/:id', component: SpeakerEditPage, outlet: 'speaker' },

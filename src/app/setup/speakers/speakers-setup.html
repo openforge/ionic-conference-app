@@ -15,7 +15,7 @@
 
 <ion-content>
   <ion-item-group *ngFor="let speaker of speakers">
-    <ion-item [hidden]="!speaker.name.includes(queryText)"
+    <ion-item [hidden]="!speaker.name.toLowerCase().includes(queryText)"
               [href]="'setup/tabs/(speaker:edit/'+ speaker.id">
       <ion-avatar slot="start">
         <img [src]="speaker.profilePic" alt="Speaker profile pic">

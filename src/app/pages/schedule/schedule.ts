@@ -7,6 +7,7 @@ import { ScheduleTrackPage } from '../schedule-track/schedule-track';
 import { ConferenceData } from '../../providers/conference-data';
 import { UserData } from '../../providers/user-data';
 import { User, Session, PartOfDay } from '../../models';
+import { SessionData } from '../../providers/session-data';
 
 @Component({
   selector: 'page-schedule',
@@ -41,6 +42,7 @@ export class SchedulePage implements OnInit {
   constructor(
     public alertCtrl: AlertController,
     public dataProvider: ConferenceData,
+    private sessionProvider: SessionData,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
     public router: Router,
@@ -74,7 +76,7 @@ export class SchedulePage implements OnInit {
 
     if (this.schedule.length === 0 || this.changePeriod) {
       this.changePeriod = false;
-      this.dataProvider.getSessionInPeriod(this.start, this.end).subscribe(
+      this.sessionProvider.getSessionsInPeriod(this.start, this.end).subscribe(
         (response: Session[]) => {
           this.sessions = response;
           this.buildSchedule();

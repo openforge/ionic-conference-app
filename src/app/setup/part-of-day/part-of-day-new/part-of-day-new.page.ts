@@ -4,6 +4,7 @@ import { FunctionlData } from '../../../providers/function-data';
 import { ConferenceData } from '../../../providers/conference-data';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { UserData } from '../../../providers/user-data';
 
 @Component({
   selector: 'part-of-day-new',
@@ -22,12 +23,19 @@ export class PartOfDayNewPage implements OnInit {
   constructor(private cdRef: ChangeDetectorRef,
               private alertCtrl: AlertController,
               private funProvider: FunctionlData,
-              private confData: ConferenceData,
+              private userProvider: UserData,
+              private confProvider: ConferenceData,
               private router: Router) { }
 
   ngOnInit() {
-    this.confData.getPartsOfDay().subscribe(data => this.PODs = data);
-    this.setInitialValue();
+    this.userProvider.getUser().then(user => {
+      if ( !user || user.username !== 'admin') {
+        this.router.navigateByUrl('/tutorial');
+      } else {
+        this.confProvider.getPartsOfDay().subscribe(data => this.PODs = data);
+        this.setInitialValue();
+      }
+    });
   }
 
   setInitialValue() {
@@ -102,7 +110,7 @@ export class PartOfDayNewPage implements OnInit {
         {
           text: 'Save',
           handler: () => {
-            this.confData.changePartsOfDay(this.PODs, this.newPODs);
+            this.confProvider.changePartsOfDay(this.PODs, this.newPODs);
             this.router.navigateByUrl('setup/tabs/(partofday:partofday)');
           }
         }

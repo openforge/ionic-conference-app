@@ -16,7 +16,6 @@ export class SpeakerEditPage implements OnInit {
   speaker: Speaker;
   loadImage = false;
   currentUrl = '';
-  newPath = '';
 
   constructor(private activatedRoute: ActivatedRoute,
               private speakerData: SpeakerData,
@@ -42,8 +41,8 @@ export class SpeakerEditPage implements OnInit {
       this.speakerData.getSpeaker(this.id).then(data => {
         this.speaker = data;
         this.speaker.id = this.id;
+        // to keep profile's path as string.
         this.currentUrl = data.profilePic;
-        this.newPath = this.currentUrl;
       });
     }
   }
@@ -53,6 +52,8 @@ export class SpeakerEditPage implements OnInit {
       if (this.mode === 'New') {
         this.speakerData.addNewSpeaker(this.speaker);
       } else {
+        // to reassign it's origin path as string.
+        this.speaker.profilePic = this.currentUrl;
         this.speakerData.updateSpeaker(this.speaker);
       }
       this.router.navigateByUrl('/setup/tabs/(speaker:speaker)');

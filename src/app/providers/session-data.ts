@@ -17,12 +17,27 @@ export class SessionData {
   session: Observable<Session> ;
   id: string;
 
-  constructor(private afs: AngularFirestore) {
+  constructor(private afs: AngularFirestore) {}
+
+  getSessionsInPeriod(start, end): Observable<Session[]> {
     this.sessionsCollection = this.afs.collection(
-      'sessions', ref => ref.orderBy('date', 'asc'));
+      'sessions', ref => ref.where('date', '>=', start)
+                            .where('date', '<=', end)
+                            .orderBy('date', 'asc'));
+    this.sessions = this.sessionsCollection.snapshotChanges()
+    .pipe(map(response => {
+      return response.map(action => {
+        const data = action.payload.doc.data() as Session;
+        data.id = action.payload.doc.id;
+        return data;
+      });
+    }));
+    return this.sessions ;
   }
 
   getSessions(): Observable<Session[]> {
+    this.sessionsCollection = this.afs.collection(
+      'sessions', ref => ref.orderBy('date', 'asc'));
     this.sessions = this.sessionsCollection.snapshotChanges()
       .pipe(map(response => {
         return response.map(action => {
@@ -74,16 +89,17 @@ export class SessionData {
     session.id = id;
   }
 
-  deleteSession(session: Session) {
+  removeSession(session: Session) {
     this.sessionDoc = this.afs.doc(`sessions/${session.id}`);
     this.sessionDoc.delete();
   }
 
-  getSession(id: string) {
+  getSession(id: string): Promise<any> {
     return this.sessionsCollection.doc(id).ref.get()
       .then(doc => {
-        const res = doc.data() as Session ;
-        return res;
+        const session = doc.data() as Session ;
+        session.id = id;
+        return session;
       });
   }
 }

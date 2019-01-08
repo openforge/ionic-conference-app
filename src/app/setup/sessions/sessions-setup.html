@@ -4,9 +4,23 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Sessions</ion-title>
+    <ion-buttons slot="end">
+      <ion-item [href]="'setup/tabs/(sessions:update/'+ 'New'">Add a New</ion-item>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-
+  <ion-item-group *ngFor="let session of sessions">
+    <ion-item [hidden]="!session.name.toLowerCase().includes(queryText)"
+              [href]="'setup/tabs/(sessions:update/'+ session.id">
+      {{session.name}} ( {{ session.date }} )
+      <ion-buttons slot="end">
+        <ion-icon name="trash" color="danger" (click)="onConfirmToRemove(session)"></ion-icon>
+      </ion-buttons>
+    </ion-item>
+  </ion-item-group>
 </ion-content>
