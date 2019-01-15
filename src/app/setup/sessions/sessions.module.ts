@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { SessionsSetup } from './sessions-setup';
+import { PickSpeakersPage } from './pick-speakers/pick-speakers.page';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [SessionsSetup]
+  declarations: [SessionsSetup, PickSpeakersPage],
+  entryComponents: [PickSpeakersPage]
 })
 export class SessionsSetupModule {}

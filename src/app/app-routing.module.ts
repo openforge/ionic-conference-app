@@ -35,7 +35,8 @@ const routes: Routes = [
     path: 'setup',
     loadChildren: './setup/tabs-setup/tabs-setup.module#TabsSetupPageModule'
   },
-  { path: 'session-edit', loadChildren: './setup/sessions/session-edit/session-edit.module#SessionEditPageModule' }
+  { path: 'session-edit', loadChildren: './setup/sessions/session-edit/session-edit.module#SessionEditPageModule' },
+  { path: 'pick-speakers', loadChildren: './setup/sessions/pick-speakers/pick-speakers.module#PickSpeakersPageModule' }
 ];
 
 @NgModule({

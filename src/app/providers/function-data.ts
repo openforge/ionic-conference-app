@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class FunctionlData {
 
-  getDateFormat(date: Date) {
+  getDateFormat(date?: Date) {
     if (!date) {
       date = new Date();
     }
@@ -13,6 +13,15 @@ export class FunctionlData {
     return dateArray[2] + '-' +
            this.reform2digits(dateArray[0]) + '-' +
            this.reform2digits(dateArray[1]);
+  }
+
+  // change date format : USA <-> EU
+  changeDateFormat(date: string) {
+    const arr = date.split('-');
+    if (arr[0].length > 3) {
+      return `${arr[1]}-${arr[2]}-${arr[0]}`;
+    }
+    return `${arr[2]}-${arr[0]}-${arr[1]}`;
   }
 
   getAmPmTimeFormat(time: string): string {

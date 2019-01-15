@@ -2,14 +2,15 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
+
 import { IonicModule } from '@ionic/angular';
 
-import { SessionEditPage } from './session-edit.page';
+import { PickSpeakersPage } from './pick-speakers.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: SessionEditPage
+    component: PickSpeakersPage
   }
 ];
 
@@ -20,8 +21,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [
-    SessionEditPage
-  ]
+  declarations: [PickSpeakersPage]
 })
-export class SessionEditPageModule {}
+export class PickSpeakersPageModule {}

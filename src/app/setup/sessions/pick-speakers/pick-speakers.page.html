@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">Cancel</ion-button>
+    </ion-buttons>
+
+    <ion-title>Select Speakers</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="applySelection()" strong>Save</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-toolbar>
+    <ion-searchbar [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>
+  </ion-toolbar>
+  
+</ion-header>
+
+<ion-content class="outer-content">
+  <ion-list>
+    <ion-list-header>Speaker</ion-list-header>
+
+    <ion-item *ngFor="let spk of s_speakers" [hidden]="!spk.name.toLowerCase().includes(queryText)">
+      <span slot="start" class="dot"></span>
+      <ion-label>{{ spk.name }} ( {{ spk.phone }} )</ion-label>
+      <ion-checkbox [(ngModel)]="spk.isChecked" checked="{{spk.isChecked}}" color="success"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-item (click)="unselectAll()" detail="false" class="reset-filters">
+      Unselect All Speakers
+    </ion-item>
+  </ion-list>
+</ion-content>

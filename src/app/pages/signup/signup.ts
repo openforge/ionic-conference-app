@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UserData } from '../../providers/user-data';
 import { ConferenceData } from '../../providers/conference-data';
 import { User, Track } from '../../models';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'page-signup',
@@ -22,6 +23,7 @@ export class SignupPage implements OnInit {
   submitted = false;
 
   constructor(public router: Router,
+              private alertCtrl: AlertController,
               public userProvider: UserData,
               public dataProvider: ConferenceData) {}
 
@@ -38,9 +40,9 @@ export class SignupPage implements OnInit {
     this.submitted = true;
     if (form.valid && this.signup.password === this.confirmPassword) {
       if (this.isNameUsed(this.signup.username)) {
-        alert('Name is already taken.');
+        this.onError('Name is already taken.');
       } else if (this.isEmailUsed(this.signup.email)) {
-        alert('Email is already taken.');
+        this.onError('Email is already taken.');
       } else {
         this.setTrackFilter();
         this.userProvider.signup(this.signup);
@@ -61,5 +63,22 @@ export class SignupPage implements OnInit {
 
   isEmailUsed(email) {
     return this.users.find(ur => ur.email.toLowerCase() === email.toLowerCase());
+  }
+
+  async onError(message: string) {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirm Signup',
+      message: message,
+      buttons: [
+        {
+          text: 'ok',
+          role: 'cancel',
+          handler: () => {
+          }
+        }
+      ],
+      backdropDismiss: false
+    });
+    await alert.present();
   }
 }

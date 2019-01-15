@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Session } from '../../../models';
+
+import { Session, Track, Speaker } from '../../../models';
 import { SessionData } from '../../../providers/session-data';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FunctionlData } from '../../../providers/function-data';
+import { SpeakerData } from '../../../providers/speaker-data';
+import { ConferenceData } from '../../../providers/conference-data';
+import { ModalController } from '@ionic/angular';
+import { PickSpeakersPage } from '../pick-speakers/pick-speakers.page';
 
 @Component({
   selector: 'session-edit',
@@ -13,17 +19,30 @@ export class SessionEditPage implements OnInit {
   mode: string;
   id: string;
   session: Session;
+  minYear: string;
+  maxYear: string;
+  tracks: Track[];
+  speakers: Speaker[];
+  s_tracks: { name: string, isChecked: boolean }[] = [];
+  moreSpeakers = false;
 
   constructor(private activatedRoute: ActivatedRoute,
+              private modalCtrl: ModalController,
               private sessionProvider: SessionData,
+              private speakerProvider: SpeakerData,
+              private confProvider: ConferenceData,
+              private funProvider: FunctionlData,
               private router: Router) { }
 
   ngOnInit() {
     this.mode = this.activatedRoute.snapshot.paramMap.get('id');
     if (this.mode === 'New') {
+      const today = new Date();
+      this.minYear = '' + (today.getFullYear() - 20);
+      this.maxYear = '' + (+this.minYear + 40);
       this.session = {
         name: '',
-        date: '',         // 2018-12-06
+        date: this.funProvider.getDateFormat(),         // 2018-12-06
         timeStart: '',    // 15:30 for 3:30pm
         timeEnd: '',
         location: '',
@@ -36,8 +55,58 @@ export class SessionEditPage implements OnInit {
       this.sessionProvider.getSession(this.id).then(data => {
         this.session = data;
         this.session.id = this.id;
+        this.minYear = '' + (+data.date.slice(0, 4) - 5);
+        this.maxYear = '' + (+this.minYear + 15);
       });
     }
+    this.getSpeakersTracks();
+  }
+
+  getSpeakersTracks() {
+    this.speakerProvider.getSpeakers().subscribe(data => {
+      this.speakers = data;
+    });
+
+    this.confProvider.getTracks().subscribe(data => {
+      this.tracks = data;
+    });
+  }
+
+  isInSession(key: string, type: string): any {
+    if (type === 'Speaker') {
+      return this.session.speakerIDs.find(id => id === key);
+    }
+    return this.session.tracks.find(name => name === key);
+  }
+
+  onRemoveSpeaker(s_id) {
+    const idx = this.session.speakerIDs.findIndex(id => id === s_id);
+    if (idx > -1) {
+      this.session.speakerIDs.splice(idx, 1);
+    }
+  }
+
+  async selectSpeakers() {
+    const modal = await this.modalCtrl.create({
+      component: PickSpeakersPage,
+      componentProps: { speakers: this.speakers, ids: this.session.speakerIDs }
+    });
+    await modal.present();
+
+    const { data } = await modal.onWillDismiss();
+    if (data) {
+      this.session.speakerIDs = data;
+    }
+  }
+
+  onSubmit() {
+    if (this.mode === 'New') {
+      console.log('saved', this.session.date);
+    } else {
+      console.log('updated', this.session.date);
+    }
+    console.log(typeof this.session.date);
+    this.onExit();
   }
 
   onExit() {

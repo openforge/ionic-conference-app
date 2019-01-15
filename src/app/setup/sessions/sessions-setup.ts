@@ -4,10 +4,8 @@ import { Router } from '@angular/router';
 
 import { UserData } from '../../providers/user-data';
 import { SessionData } from '../../providers/session-data';
-import { SpeakerData } from '../../providers/speaker-data';
-import { ConferenceData } from '../../providers/conference-data';
 
-import { Session, Speaker, Track } from '../../models';
+import { Session } from '../../models';
 
 @Component({
   selector: 'sessions',
@@ -20,13 +18,9 @@ export class SessionsSetup implements OnInit {
   endDate = '2019-01-31';
   queryText = '';
   sessions: Session[];
-  speakers: Speaker[];
-  tracks: Track[];
 
   constructor(private userProvider: UserData,
               private sessionProvider: SessionData,
-              private speakerProvider: SpeakerData,
-              private confProvider: ConferenceData,
               private alertCtrl: AlertController,
               private router: Router) { }
 
@@ -39,12 +33,6 @@ export class SessionsSetup implements OnInit {
           .subscribe(data => {
             this.sessions = data;
           });
-        this.speakerProvider.getSpeakers().subscribe(data => {
-          this.speakers = data;
-        });
-        this.confProvider.getTracks().subscribe(data => {
-          this.tracks = data;
-        });
       }
     });
   }
