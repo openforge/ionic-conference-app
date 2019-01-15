@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { UserData } from '../../providers/user-data';
 import { User } from '../../models';
-import { AlertController } from '@ionic/angular';
+import { FunctionlData } from '../../providers/function-data';
 
 @Component({
   selector: 'page-login',
@@ -20,7 +20,7 @@ export class LoginPage implements OnInit {
 
   constructor(public userData: UserData,
               public router: Router,
-              private alertCtrl: AlertController,
+              private funProvider: FunctionlData,
               private userProvider: UserData) { }
 
   ngOnInit() {
@@ -38,10 +38,10 @@ export class LoginPage implements OnInit {
           this.userData.login(user);
           this.router.navigateByUrl('/app/tabs/(schedule:schedule)');
         } else {
-          this.onError('Invalid password. Try again.');
+          this.funProvider.onError('Confirm Login', 'Invalid password. Try again.');
         }
       } else {
-        this.onError('User not found. Try again.');
+        this.funProvider.onError('Confirm Login', 'User not found. Try again.');
       }
     }
   }
@@ -55,22 +55,5 @@ export class LoginPage implements OnInit {
 
   onSignup() {
     this.router.navigateByUrl('/signup');
-  }
-
-  async onError(message: string) {
-    const alert = await this.alertCtrl.create({
-      header: 'Confirm Login',
-      message: message,
-      buttons: [
-        {
-          text: 'ok',
-          role: 'cancel',
-          handler: () => {
-          }
-        }
-      ],
-      backdropDismiss: false
-    });
-    await alert.present();
   }
 }

@@ -4,6 +4,7 @@ import { AlertController } from '@ionic/angular';
 
 import { UserData } from '../../providers/user-data';
 import { User } from '../../models';
+import { FunctionlData } from '../../providers/function-data';
 
 @Component({
   selector: 'page-account',
@@ -12,6 +13,7 @@ import { User } from '../../models';
   encapsulation: ViewEncapsulation.None
 })
 export class AccountPage implements AfterViewInit {
+  header = `User's Info`;
   users: User[];
   user: User;
   succeed: boolean;
@@ -20,7 +22,8 @@ export class AccountPage implements AfterViewInit {
 
   constructor(public alertCtrl: AlertController,
               public router: Router,
-              public userProvider: UserData) {}
+              public userProvider: UserData,
+              private funProvider: FunctionlData) {}
 
   ngAfterViewInit() {
     this.userProvider.getUsers().subscribe(
@@ -60,17 +63,21 @@ export class AccountPage implements AfterViewInit {
         {
           text: 'Ok',
           handler: (data: any) => {
-            if (this.isTheValueUsed(data.username)) {
-              alert(data.username + ' was used already. Try another.');
+            if (data.username.trim().length < 4) {
+              this.funProvider.onError(this.header, 'Username should has more then 3 letters. Try again.');
             } else {
-              // update after getter user's avatar as string.
-              this.userProvider.getUser().then(user => {
-                user.username = data.username;
-                this.updateUserData(user);
-              });
-              this.user.username = data.username;
-              this.succeed = true;
-              this.jobDescription = 'Username has been changed.';
+              if (this.isTheValueUsed(data.username)) {
+                this.funProvider.onError(this.header, data.username + ' was used already. Try another.');
+              } else {
+                // update after getter user's avatar as string.
+                this.userProvider.getUser().then(user => {
+                  user.username = data.username;
+                  this.updateUserData(user);
+                });
+                this.user.username = data.username;
+                this.succeed = true;
+                this.jobDescription = 'Username has been changed.';
+              }
             }
           }
         }
@@ -98,15 +105,16 @@ export class AccountPage implements AfterViewInit {
           text: 'Ok',
           handler: (data: any) => {
             if (this.isTheValueUsed(data.email)) {
-              alert(data.email + ' was used already. Try another.');
+              this.funProvider.onError(this.header, data.email + ' was used already. Try another.');
             } else {
               // update after getter user's avatar as string.
               this.userProvider.getUser().then(user => {
-                this.user.email = data.email;
+                user.email = data.email;
                 this.updateUserData(user);
+                this.user.email = data.email;
+                this.succeed = true;
+                this.jobDescription = 'Email has been changed.';
               });
-              this.succeed = true;
-              this.jobDescription = 'Email has been changed.';
             }
           }
         }
@@ -134,19 +142,20 @@ export class AccountPage implements AfterViewInit {
           text: 'Ok',
           handler: (data: any) => {
             if (this.user.password !== data.currentPW) {
-              alert('Current password does not match your password.');
+              this.funProvider.onError(this.header, 'Current password does not match your password.');
             } else if (data.newPW.length < 4) {
-              alert('Password should be more than 3 characters.');
+              this.funProvider.onError(this.header, 'Password should be more than 3 characters.');
             } else if (data.newPW !== data.confirmPW) {
-              alert('New password does not match Confirm password.');
+              this.funProvider.onError(this.header, 'New password does not match Confirm password.');
             } else {
               // update after getter user's avatar as string.
               this.userProvider.getUser().then(user => {
-                this.user.password = data.newPW;
+                user.password = data.newPW;
                 this.updateUserData(user);
+                this.user.password = data.newPW;
+                this.succeed = true;
+                this.jobDescription = 'Password has been changed.';
               });
-              this.succeed = true;
-              this.jobDescription = 'Password has been changed.';
             }
           }
         }
