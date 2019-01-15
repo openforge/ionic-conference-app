@@ -8,6 +8,7 @@ import { SpeakerData } from '../../../providers/speaker-data';
 import { ConferenceData } from '../../../providers/conference-data';
 import { ModalController } from '@ionic/angular';
 import { PickSpeakersPage } from '../pick-speakers/pick-speakers.page';
+import { PickTracksPage } from '../pick-tracks/pick-tracks.page';
 
 @Component({
   selector: 'session-edit',
@@ -97,6 +98,26 @@ export class SessionEditPage implements OnInit {
     const { data } = await modal.onWillDismiss();
     if (data) {
       this.session.speakerIDs = data;
+    }
+  }
+
+  onRemoveTrack(s_name) {
+    const idx = this.session.tracks.findIndex(name => name === s_name);
+    if (idx > -1) {
+      this.session.tracks.splice(idx, 1);
+    }
+  }
+
+  async selectTracks() {
+    const modal = await this.modalCtrl.create({
+      component: PickTracksPage,
+      componentProps: { tracks: this.tracks, names: this.session.tracks }
+    });
+    await modal.present();
+
+    const { data } = await modal.onWillDismiss();
+    if (data) {
+      this.session.tracks = data;
     }
   }
 

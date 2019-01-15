@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NavParams, ModalController } from '@ionic/angular';
-import { Speaker } from '../../../models';
 
 @Component({
   selector: 'pick-speakers',

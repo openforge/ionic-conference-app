@@ -1,12 +1,9 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-button (click)="dismiss()">Cancel</ion-button>
-    </ion-buttons>
-
     <ion-title>Select Speakers</ion-title>
 
     <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Cancel</ion-button>
       <ion-button (click)="applySelection()" strong>Save</ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -19,7 +16,9 @@
 
 <ion-content class="outer-content">
   <ion-list>
-    <ion-list-header>Speaker</ion-list-header>
+    <ion-list-header>
+      <ion-title>Speakers</ion-title>
+    </ion-list-header>
 
     <ion-item *ngFor="let spk of s_speakers" [hidden]="!spk.name.toLowerCase().includes(queryText)">
       <span slot="start" class="dot"></span>
@@ -29,7 +28,7 @@
   </ion-list>
 
   <ion-list>
-    <ion-item (click)="unselectAll()" detail="false" class="reset-filters">
+    <ion-item color="danger" (click)="unselectAll()" detail="false" class="reset-filters">
       Unselect All Speakers
     </ion-item>
   </ion-list>

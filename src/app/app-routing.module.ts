@@ -36,7 +36,8 @@ const routes: Routes = [
     loadChildren: './setup/tabs-setup/tabs-setup.module#TabsSetupPageModule'
   },
   { path: 'session-edit', loadChildren: './setup/sessions/session-edit/session-edit.module#SessionEditPageModule' },
-  { path: 'pick-speakers', loadChildren: './setup/sessions/pick-speakers/pick-speakers.module#PickSpeakersPageModule' }
+  // { path: 'pick-speakers', loadChildren: './setup/sessions/pick-speakers/pick-speakers.module#PickSpeakersPageModule' },
+  // { path: 'pick-track', loadChildren: './setup/sessions/pick-track/pick-track.module#PickTrackPageModule' }
 ];
 
 @NgModule({
