@@ -142,8 +142,10 @@ export class SessionEditPage implements OnInit {
     if (this.isValidAll()) {
       if (this.mode === 'New') {
         console.log('saved', this.session);
+        this.sessionProvider.addNewSession(this.session);
       } else {
         console.log('updated', this.session);
+        this.sessionProvider.updateSession(this.session);
       }
       this.onExit();
     }

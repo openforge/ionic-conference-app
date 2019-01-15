@@ -15,7 +15,7 @@ import { Session } from '../../models';
 export class SessionsSetup implements OnInit {
 
   startDate = '2000-01-01';
-  endDate = '2019-01-31';
+  endDate = '2100-12-31';
   queryText = '';
   sessions: Session[];
 
@@ -52,7 +52,7 @@ export class SessionsSetup implements OnInit {
         {
           text: 'Remove',
           handler: () => {
-            // this.sessionProvider.removeSession(session);
+            this.sessionProvider.removeSession(session);
             this.router.navigateByUrl('setup/tabs/(sessions:sessions)');
           }
         }

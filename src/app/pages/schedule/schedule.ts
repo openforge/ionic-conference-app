@@ -24,8 +24,8 @@ export class SchedulePage implements OnInit {
   segment = '';
   excludeTracks: any[] = [];
 
-  start = '2019-01-10';
-  end = '2019-01-15';
+  start = '2019-01-01';
+  end = '2019-12-31';
   changePeriod = true;
 
   partsOfDay: PartOfDay[];
