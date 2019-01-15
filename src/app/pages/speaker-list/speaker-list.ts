@@ -14,6 +14,8 @@ import { UserData } from '../../providers/user-data';
   encapsulation: ViewEncapsulation.None
 })
 export class SpeakerListPage {
+
+  queryText = '';
   speakers: Speaker[];
 
   constructor(
