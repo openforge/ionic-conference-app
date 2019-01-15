@@ -51,4 +51,11 @@ export class FunctionlData {
     value = +value;
     return ((value < 10) ? '0' : '') + value ;
   }
+
+  addMinute(time) {
+    const [h, m] = time.split(':');
+    const hour = this.reform2digits((m === '59') ? +h + 1 : +h);
+    const min = this.reform2digits((m === '59') ? 0 : +m + 1);
+    return (hour === '24') ? null : hour + ':' + min ;
+  }
 }

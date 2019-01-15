@@ -44,16 +44,9 @@ export class PartOfDayNewPage implements OnInit {
     if (this.len === 0) {
       this.timeFrom = '00:00';
     } else {
-      this.timeFrom = this.getNextTime(this.newPODs[this.len - 1].timeTo);
+      this.timeFrom = this.funProvider.addMinute(this.newPODs[this.len - 1].timeTo);
     }
-    this.timeTo = this.getNextTime(this.timeFrom);
-  }
-
-  getNextTime(time) {
-    const [h, m] = time.split(':');
-    const hour = this.funProvider.reform2digits((m === '59') ? +h + 1 : +h);
-    const min = this.funProvider.reform2digits((m === '59') ? 0 : +m + 1);
-    return (hour === '24') ? null : hour + ':' + min ;
+    this.timeTo = this.funProvider.addMinute(this.timeFrom);
   }
 
   cancelInput() {
@@ -91,7 +84,7 @@ export class PartOfDayNewPage implements OnInit {
     this.cdRef.detectChanges();
     if (value <= this.timeFrom) {
       alert('Wrong time for To. Try again.');
-      this.timeTo = this.getNextTime(this.timeFrom);
+      this.timeTo = this.funProvider.addMinute(this.timeFrom);
     }
   }
 

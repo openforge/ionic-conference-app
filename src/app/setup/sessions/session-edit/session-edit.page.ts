@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
 import { Session, Track, Speaker } from '../../../models';
 import { SessionData } from '../../../providers/session-data';
@@ -27,6 +27,7 @@ export class SessionEditPage implements OnInit {
   moreSpeakers = false;
 
   constructor(private activatedRoute: ActivatedRoute,
+              private cdRef: ChangeDetectorRef,
               private modalCtrl: ModalController,
               private sessionProvider: SessionData,
               private speakerProvider: SpeakerData,
@@ -43,8 +44,8 @@ export class SessionEditPage implements OnInit {
       this.session = {
         name: '',
         date: this.funProvider.getDateFormat(),         // 2018-12-06
-        timeStart: '',    // 15:30 for 3:30pm
-        timeEnd: '',
+        timeStart: '10:00',    // 15:30 for 3:30pm
+        timeEnd: '10:00',
         location: '',
         description: '',
         speakerIDs: [],   // speaker's id
@@ -99,18 +100,47 @@ export class SessionEditPage implements OnInit {
     }
   }
 
-  onSubmit() {
-    if (this.mode === 'New') {
-      console.log('saved', this.session.date);
-    } else {
-      console.log('updated', this.session.date);
+  changeTimeEnd(value) {
+    this.cdRef.detectChanges();
+    if (value > this.session.timeEnd) {
+      this.session.timeEnd = this.funProvider.addMinute(value);
     }
-    console.log(typeof this.session.date);
-    this.onExit();
+  }
+
+  confirmTimeEnd(value) {
+    this.cdRef.detectChanges();
+    if (value <= this.session.timeStart) {
+      alert('Wrong time for To. Try again.');
+      this.session.timeEnd = this.funProvider.addMinute(this.session.timeStart);
+    }
+  }
+
+  onSubmit() {
+    this.session.name = this.session.name.trim();
+    this.session.location = this.session.location.trim();
+    if (this.isValidAll()) {
+      if (this.mode === 'New') {
+        console.log('saved', this.session);
+      } else {
+        console.log('updated', this.session);
+      }
+      this.onExit();
+    }
   }
 
   onExit() {
     this.router.navigateByUrl('/setup/tabs/(sessions:sessions)');
+  }
+
+  isValidAll() {
+    if (this.session.name.length === 0) {
+      alert('Need a Title for the session. Try again.');
+      return false;
+    } else if (this.session.timeEnd <= this.session.timeStart) {
+      alert('TimeTo has to be later than TimeFrom. Try again.');
+      return false;
+    }
+    return true;
   }
 
 }

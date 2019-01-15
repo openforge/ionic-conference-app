@@ -25,9 +25,13 @@
     </ion-item>
     <ion-item>
       <ion-label color="danger">From: </ion-label>
-      <ion-datetime class="get-time" [(ngModel)]="session.timeStart" displayFormat="HH:mm"></ion-datetime>
+      <ion-datetime class="get-time" [(ngModel)]="session.timeStart"
+                    displayFormat="HH:mm"
+                    (ngModelChange)="changeTimeEnd($event)"></ion-datetime>
       <ion-label color="danger">To : </ion-label>
-      <ion-datetime class="get-time" [(ngModel)]="session.timeEnd" displayFormat="HH:mm"></ion-datetime>
+      <ion-datetime class="get-time" [(ngModel)]="session.timeEnd"
+                    displayFormat="HH:mm"
+                    (ngModelChange)="confirmTimeEnd($event)"></ion-datetime>
     </ion-item>
     <ion-item>
       <ion-label color="danger">Location: </ion-label>
