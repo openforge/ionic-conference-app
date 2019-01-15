@@ -3,6 +3,7 @@ import { PartOfDay } from '../../models';
 import { ConferenceData } from '../../providers/conference-data';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { FunctionlData } from '../../providers/function-data';
 
 @Component({
   selector: 'part-of-day',
@@ -15,6 +16,7 @@ export class PartOfDaySetup implements OnInit {
 
   constructor(private confData: ConferenceData,
               private alertCtrl: AlertController,
+              private funProvider: FunctionlData,
               private router: Router) { }
 
   ngOnInit() {
@@ -38,7 +40,7 @@ export class PartOfDaySetup implements OnInit {
           handler: (data: any) => {
             data.newName = data.newName.trim();
             if (this.isTheValueUsed(data.newName)) {
-              alert(data.newName + ' was used already. Try another.');
+              this.funProvider.onError('Part Of Day', data.newName + ' was used already. Try another.');
             } else {
               pod.name = data.newName;
               this.confData.updatePartOfDay(pod);

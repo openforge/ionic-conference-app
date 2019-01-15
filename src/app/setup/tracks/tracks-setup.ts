@@ -5,6 +5,7 @@ import { Track, Session } from '../../models';
 import { SessionData } from '../../providers/session-data';
 import { ConferenceData } from '../../providers/conference-data';
 import { AlertController } from '@ionic/angular';
+import { FunctionlData } from '../../providers/function-data';
 
 @Component({
   selector: 'tracks',
@@ -13,6 +14,7 @@ import { AlertController } from '@ionic/angular';
 })
 export class TracksSetup implements OnInit {
 
+  header = `Track's Info`;
   tracks: Track[];
   sessions: Session[];
   newName: string;
@@ -22,6 +24,7 @@ export class TracksSetup implements OnInit {
   constructor(private userProvider: UserData,
               private sessionProvider: SessionData,
               private confProvider: ConferenceData,
+              private funProvider: FunctionlData,
               private router: Router,
               private alertCtrl: AlertController) { }
 
@@ -50,7 +53,7 @@ export class TracksSetup implements OnInit {
           handler: (data: any) => {
             data.newName = data.newName.trim();
             if (this.isTheValueUsed(data.newName)) {
-              alert(data.newName + ' was used already. Try another.');
+              this.funProvider.onError(this.header, data.newName + ' was used already. Try another.');
             } else {
               this.confProvider.addTrack({ name: data.newName });
               this.succeed = true;
@@ -83,7 +86,7 @@ export class TracksSetup implements OnInit {
           handler: (data: any) => {
             data.newName = data.newName.trim();
             if (this.isTheValueUsed(data.newName)) {
-              alert(data.newName + ' was used already. Try another.');
+              this.funProvider.onError(this.header, data.newName + ' was used already. Try another.');
             } else {
               this.confProvider.updateTrack(track, data.newName );
               this.succeed = true;

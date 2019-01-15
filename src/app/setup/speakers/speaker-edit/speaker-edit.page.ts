@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Speaker } from '../../../models';
 import { SpeakerData } from '../../../providers/speaker-data';
+import { FunctionlData } from '../../../providers/function-data';
 
 @Component({
   selector: 'speaker-edit',
@@ -11,6 +12,7 @@ import { SpeakerData } from '../../../providers/speaker-data';
 })
 export class SpeakerEditPage implements OnInit {
 
+  header = `Speaker's Info`;
   mode: string;
   id: string;
   speaker: Speaker;
@@ -18,7 +20,8 @@ export class SpeakerEditPage implements OnInit {
   currentUrl = '';
 
   constructor(private activatedRoute: ActivatedRoute,
-              private speakerData: SpeakerData,
+              private speakerProvider: SpeakerData,
+              private funProvider: FunctionlData,
               private router: Router) { }
 
   ngOnInit() {
@@ -38,7 +41,7 @@ export class SpeakerEditPage implements OnInit {
       };
     } else {
       [this.id, this.mode] = [this.mode, 'Edit'];
-      this.speakerData.getSpeaker(this.id).then(data => {
+      this.speakerProvider.getSpeaker(this.id).then(data => {
         this.speaker = data;
         this.speaker.id = this.id;
         // to keep profile's path as string.
@@ -50,11 +53,11 @@ export class SpeakerEditPage implements OnInit {
   onSubmit() {
     if (this.verifiedInput()) {
       if (this.mode === 'New') {
-        this.speakerData.addNewSpeaker(this.speaker);
+        this.speakerProvider.addNewSpeaker(this.speaker);
       } else {
         // to reassign it's origin path as string.
         this.speaker.profilePic = this.currentUrl;
-        this.speakerData.updateSpeaker(this.speaker);
+        this.speakerProvider.updateSpeaker(this.speaker);
       }
       this.router.navigateByUrl('/setup/tabs/(speaker:speaker)');
     }
@@ -71,13 +74,13 @@ export class SpeakerEditPage implements OnInit {
     this.speaker.twitter = this.speaker.twitter.trim() ;
     this.speaker.about = this.speaker.about.trim() ;
     if (this.speaker.name.length < 4) {
-      alert('Name should be more than 4 digits.');
+      this.funProvider.onError(this.header, 'Name should be more than 3 digits.');
     } if (this.isNameUsed()) {
-      alert('Name already exist. Try another.');
+      this.funProvider.onError(this.header, 'Name already exist. Try another.');
     } if (this.isEmailUsed()) {
-      alert('Email is not valid. Try another.');
+      this.funProvider.onError(this.header, 'Email is not valid. Try another.');
     } if (this.speaker.phone.length < 10) {
-      alert('Phone number is not valid. Try again.');
+      this.funProvider.onError(this.header, 'Phone number is not valid. Try again.');
     } else {
       return true;
     }
@@ -102,7 +105,7 @@ export class SpeakerEditPage implements OnInit {
     const oldUrl = this.speaker.profilePic;
     const id = this.speaker.id;
     this.speaker.profilePic = path;
-    this.speakerData.updateSpeaker(this.speaker);
+    this.speakerProvider.updateSpeaker(this.speaker);
     this.loadImage = false;
     this.router.navigateByUrl('/setup/tabs/(speaker:speaker)');
   }

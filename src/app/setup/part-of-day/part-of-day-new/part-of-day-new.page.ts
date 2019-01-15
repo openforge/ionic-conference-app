@@ -12,7 +12,7 @@ import { UserData } from '../../../providers/user-data';
   styleUrls: ['./part-of-day-new.page.scss'],
 })
 export class PartOfDayNewPage implements OnInit {
-
+  header = 'Part Of Day';
   PODs: PartOfDay[] = [];
   newPODs: PartOfDay[] = [];
   title = '';
@@ -55,7 +55,7 @@ export class PartOfDayNewPage implements OnInit {
 
   saveInput() {
     if (this.isTheValueUsed()) {
-      alert('Description is not valid. Try again');
+      this.funProvider.onError(this.header, 'Description is not valid. Try again');
     } else {
       const newPOD = {
         indexKey: this.newPODs.length + 1,
@@ -83,7 +83,7 @@ export class PartOfDayNewPage implements OnInit {
   checkTimeTo(value) {
     this.cdRef.detectChanges();
     if (value <= this.timeFrom) {
-      alert('Wrong time for To. Try again.');
+      this.funProvider.onError(this.header, 'Wrong time for To. Try again.');
       this.timeTo = this.funProvider.addMinute(this.timeFrom);
     }
   }

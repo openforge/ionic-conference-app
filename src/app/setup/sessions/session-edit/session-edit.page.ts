@@ -110,7 +110,7 @@ export class SessionEditPage implements OnInit {
   confirmTimeEnd(value) {
     this.cdRef.detectChanges();
     if (value <= this.session.timeStart) {
-      alert('Wrong time for To. Try again.');
+      this.funProvider.onError('Confirm Time', 'Wrong time for To. Try again.');
       this.session.timeEnd = this.funProvider.addMinute(this.session.timeStart);
     }
   }
@@ -134,10 +134,10 @@ export class SessionEditPage implements OnInit {
 
   isValidAll() {
     if (this.session.name.length === 0) {
-      alert('Need a Title for the session. Try again.');
+      this.funProvider.onError('Confirm Title', 'Need a Title for the session. Try again.');
       return false;
     } else if (this.session.timeEnd <= this.session.timeStart) {
-      alert('TimeTo has to be later than TimeFrom. Try again.');
+      this.funProvider.onError('Confirm Time', 'TimeTo has to be later than TimeFrom. Try again.');
       return false;
     }
     return true;

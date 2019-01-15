@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { UserData } from '../../providers/user-data';
 import { ConferenceData } from '../../providers/conference-data';
 import { User, Track } from '../../models';
-import { AlertController } from '@ionic/angular';
+import { FunctionlData } from '../../providers/function-data';
 
 @Component({
   selector: 'page-signup',
@@ -14,6 +14,7 @@ import { AlertController } from '@ionic/angular';
   encapsulation: ViewEncapsulation.None
 })
 export class SignupPage implements OnInit {
+  header = 'Confirm Signup';
   users: User[];
   signup: User = {
     username: '', password: '', email: '', favorites: [], trackFilter: []
@@ -23,8 +24,8 @@ export class SignupPage implements OnInit {
   submitted = false;
 
   constructor(public router: Router,
-              private alertCtrl: AlertController,
               public userProvider: UserData,
+              private funProvider: FunctionlData,
               public dataProvider: ConferenceData) {}
 
   ngOnInit() {
@@ -39,10 +40,12 @@ export class SignupPage implements OnInit {
   onSignup(form: NgForm) {
     this.submitted = true;
     if (form.valid && this.signup.password === this.confirmPassword) {
-      if (this.isNameUsed(this.signup.username)) {
-        this.onError('Name is already taken.');
+      if (this.signup.username.trim().length < 4) {
+        this.funProvider.onError(this.header, 'Name should has more then 3 letters. Try again.');
+      } else if (this.isNameUsed(this.signup.username)) {
+        this.funProvider.onError(this.header, 'Name is already taken. Try another.');
       } else if (this.isEmailUsed(this.signup.email)) {
-        this.onError('Email is already taken.');
+        this.funProvider.onError(this.header, 'Email is already taken. Try another.');
       } else {
         this.setTrackFilter();
         this.userProvider.signup(this.signup);
@@ -63,22 +66,5 @@ export class SignupPage implements OnInit {
 
   isEmailUsed(email) {
     return this.users.find(ur => ur.email.toLowerCase() === email.toLowerCase());
-  }
-
-  async onError(message: string) {
-    const alert = await this.alertCtrl.create({
-      header: 'Confirm Signup',
-      message: message,
-      buttons: [
-        {
-          text: 'ok',
-          role: 'cancel',
-          handler: () => {
-          }
-        }
-      ],
-      backdropDismiss: false
-    });
-    await alert.present();
   }
 }
