@@ -7,6 +7,7 @@ import { SchedulePage } from './schedule';
 import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
 import { ScheduleTrackPage } from '../schedule-track/schedule-track';
 import { SchedulePageRoutingModule } from './schedule-routing.module';
+import { DatePeriodPage } from '../date-period/date-period.page';
 
 @NgModule({
   imports: [
@@ -18,11 +19,13 @@ import { SchedulePageRoutingModule } from './schedule-routing.module';
   declarations: [
     SchedulePage,
     ScheduleFilterPage,
-    ScheduleTrackPage
+    ScheduleTrackPage,
+    DatePeriodPage
   ],
   entryComponents: [
     ScheduleFilterPage,
-    ScheduleTrackPage
+    ScheduleTrackPage,
+    DatePeriodPage
   ]
 })
 export class ScheduleModule { }

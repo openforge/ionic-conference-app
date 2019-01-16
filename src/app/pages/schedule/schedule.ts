@@ -8,6 +8,8 @@ import { ConferenceData } from '../../providers/conference-data';
 import { UserData } from '../../providers/user-data';
 import { User, Session, PartOfDay } from '../../models';
 import { SessionData } from '../../providers/session-data';
+import { FunctionlData } from '../../providers/function-data';
+import { DatePeriodPage } from '../date-period/date-period.page';
 
 @Component({
   selector: 'page-schedule',
@@ -24,8 +26,8 @@ export class SchedulePage implements OnInit {
   segment = '';
   excludeTracks: any[] = [];
 
-  start = '2019-01-01';
-  end = '2019-12-31';
+  startDate: string;
+  endDate: string;
   changePeriod = true;
 
   partsOfDay: PartOfDay[];
@@ -47,41 +49,70 @@ export class SchedulePage implements OnInit {
     public modalCtrl: ModalController,
     public router: Router,
     public toastCtrl: ToastController,
-    public userProvider: UserData
+    public userProvider: UserData,
+    private funProvider: FunctionlData
   ) { }
 
   ngOnInit() {
-    // this.app.setTitle('Schedule');
     this.userProvider.isLoggedIn().then(loggedIn => {
       if (loggedIn) {
-        this.userProvider.getUser().then(user => {
-          user.trackFilter.forEach(track => {
-            if (!track.isChecked) { this.excludeTracks.push(track.name); }
-          });
-          this.user = user;
-          this.dataProvider.getPartsOfDay().subscribe(
-            response => { this.partsOfDay = response ; }
-          );
-          this.updateSchedule();
+        this.dataProvider.getPeriod().then(period => {
+          if (period) {
+            this.startDate = period.start;
+            this.endDate = period.end;
+            this.updateSchedule();
+          } else {
+            this.getDatePeriod();
+          }
         });
       }
     });
   }
 
-  updateSchedule() {
-    // Close any open sliding items when the schedule updates
-    if (this.scheduleList) {
-      this.scheduleList.closeSlidingItems();
-    }
+  async getDatePeriod() {
+    const start = this.startDate ? this.startDate : this.funProvider.getDateFormat();
+    const end = this.endDate ? this.endDate : start ;
+    const modal = await this.modalCtrl.create({
+      component: DatePeriodPage,
+      componentProps: { start, end }
+    });
+    await modal.present();
 
-    if (this.schedule.length === 0 || this.changePeriod) {
-      this.changePeriod = false;
-      this.sessionProvider.getSessionsInPeriod(this.start, this.end).subscribe(
-        (response: Session[]) => {
-          this.sessions = response;
-          this.buildSchedule();
-      });
+    const { data } = await modal.onWillDismiss();
+    if (data) {
+      this.startDate = data.start;
+      this.endDate = data.end;
+      this.schedule = [];
+      this.changePeriod = true;
+      this.dataProvider.setPeriod({ start: this.startDate, end: this.endDate });
+      this.updateSchedule();
     }
+  }
+
+  updateSchedule() {
+    this.userProvider.getUser().then(user => {
+      user.trackFilter.forEach(track => {
+        if (!track.isChecked) { this.excludeTracks.push(track.name); }
+      });
+      this.user = user;
+      this.dataProvider.getPartsOfDay().subscribe(
+        response => { this.partsOfDay = response ; }
+      );
+
+      // Close any open sliding items when the schedule updates
+      if (this.scheduleList) {
+        this.scheduleList.closeSlidingItems();
+      }
+
+      if (this.schedule.length === 0 || this.changePeriod) {
+        this.changePeriod = false;
+        this.sessionProvider.getSessionsInPeriod(this.startDate, this.endDate).subscribe(
+          (response: Session[]) => {
+            this.sessions = response;
+            this.buildSchedule();
+        });
+      }
+    });
   }
 
   getFilterOption() {

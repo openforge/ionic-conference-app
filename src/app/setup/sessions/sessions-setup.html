@@ -23,4 +23,14 @@
       </ion-buttons>
     </ion-item>
   </ion-item-group>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="start" #fab>
+    <ion-fab-button>Period</ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-button color="secondary">{{ endDate }}</ion-button>
+      <ion-button color="secondary">{{ startDate }}</ion-button>
+      <ion-button color="secondary" (click)="getDatePeriod()">New</ion-button>
+    </ion-fab-list>
+  </ion-fab>
+  
 </ion-content>

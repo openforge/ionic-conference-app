@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 import { UserData } from './user-data';
 import { Track, Session, PartOfDay, Map } from '../models';
 import { SessionData } from './session-data';
+import { Storage } from '@ionic/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,7 @@ export class ConferenceData {
 
   constructor(
     public http: HttpClient,
+    public storage: Storage,
     public userProvider: UserData,
     public sessionProvider: SessionData,
     private afs: AngularFirestore) {
@@ -164,6 +166,14 @@ export class ConferenceData {
     newPODs.forEach(pod => {
       this.partsOfDayCollection.add(pod);
     });
+  }
+
+  getPeriod(): Promise<any> {
+    return this.storage.get('period');
+  }
+
+  setPeriod(date: any): Promise<any> {
+    return this.storage.set('period', date);
   }
 
   getMap() {

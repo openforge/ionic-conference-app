@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { SessionsSetup } from './sessions-setup';
 import { PickSpeakersPage } from './pick-speakers/pick-speakers.page';
 import { PickTracksPage } from './pick-tracks/pick-tracks.page';
+import { PeriodPage } from '../../setup/period/period.page';
 
 const routes: Routes = [
   {
@@ -23,7 +24,16 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [SessionsSetup, PickSpeakersPage, PickTracksPage],
-  entryComponents: [PickSpeakersPage, PickTracksPage]
+  declarations: [
+    SessionsSetup,
+    PickSpeakersPage,
+    PickTracksPage,
+    PeriodPage
+  ],
+  entryComponents: [
+    PickSpeakersPage,
+    PickTracksPage,
+    PeriodPage
+  ]
 })
 export class SessionsSetupModule {}

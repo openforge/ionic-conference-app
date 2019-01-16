@@ -78,4 +78,18 @@ export class FunctionlData {
     const min = this.reform2digits((m === '59') ? 0 : +m + 1);
     return (hour === '24') ? null : hour + ':' + min ;
   }
+
+  checkDateValidation(s_date: string): boolean {
+    const months = [1, 3, 5, 7, 8, 10, 12];
+    const arr = s_date.split('-');
+    const year = +arr[0];
+    const month = +arr[1];
+    const date = +arr[2];
+    if (months.find(num => num === month)) { return date < 32; }
+    if (month > 2) { return date < 31; }
+    if ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) {
+      return date < 30;
+    }
+    return date < 29;
+  }
 }
