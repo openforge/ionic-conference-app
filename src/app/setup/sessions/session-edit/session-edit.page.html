@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button text="" defaultHref="/setup/tabs/(sessions:sessions)"></ion-back-button>
+    </ion-buttons> 
+    <ion-title>{{mode}} Session</ion-title>
+    <ion-buttons slot="end">
+      <ion-item (click)=onExit()>Cancel</ion-item>
+      <ion-item (click)="onSubmit()">Save</ion-item>
+    </ion-buttons>    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list *ngIf="session">
+    <ion-item>
+      <ion-label color="danger">Title: </ion-label>
+      <ion-input [(ngModel)]="session.name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="danger">Date: </ion-label>
+      <ion-datetime class="get-date" [(ngModel)]="session.date"
+                    displayFormat="YYYY/MM/DD"
+                    min="{{minYear}}" max="{{maxYear}}"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label color="danger">From: </ion-label>
+      <ion-datetime class="get-time" [(ngModel)]="session.timeStart"
+                    displayFormat="HH:mm"
+                    (ngModelChange)="changeTimeEnd($event)"></ion-datetime>
+      <ion-label color="danger">To : </ion-label>
+      <ion-datetime class="get-time" [(ngModel)]="session.timeEnd"
+                    displayFormat="HH:mm"
+                    (ngModelChange)="confirmTimeEnd($event)"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label color="danger">Location: </ion-label>
+      <ion-input [(ngModel)]="session.location"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="danger">Description</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-textarea [(ngModel)]="session.description"></ion-textarea>
+    </ion-item>
+
+    <ion-item color="secondary">
+      Speakers:
+      <ion-buttons slot="end">
+        <ion-icon name="add" text="Add" (click)="selectSpeakers()"></ion-icon>
+      </ion-buttons>
+    </ion-item>
+    <ion-item-group *ngFor="let s of speakers">
+      <ion-item [hidden]="!isInSession(s.id, 'Speaker')">
+        {{ s.name }} ( {{ s.phone }} )
+        <ion-buttons slot="end">
+          <ion-icon name="trash" color="danger" (click)="onRemoveSpeaker(s.id)"></ion-icon>
+        </ion-buttons>
+      </ion-item>
+    </ion-item-group>
+
+    <ion-item color="secondary">
+      Tracks:
+      <ion-buttons slot="end">
+        <ion-icon name="add" text="Add" (click)="selectTracks()"></ion-icon>
+      </ion-buttons>
+    </ion-item>
+    <ion-item-group *ngFor="let t of tracks">
+      <ion-item [hidden]="!isInSession(t.name, 'Track')">
+        {{ t.name }}
+        <ion-buttons slot="end">
+          <ion-icon name="trash" color="danger" (click)="onRemoveTrack(t.name)"></ion-icon>
+        </ion-buttons>
+      </ion-item>
+    </ion-item-group>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,36 @@
+<ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Select Tracks</ion-title>
+  
+      <ion-buttons slot="end">
+        <ion-button (click)="dismiss(null)">Cancel</ion-button>
+        <ion-button (click)="applySelection()" strong>Save</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  
+    <ion-toolbar>
+      <ion-searchbar [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>
+    </ion-toolbar>
+    
+  </ion-header>
+  
+  <ion-content class="outer-content">
+    <ion-list>
+      <ion-list-header>
+        <ion-title>Tracks</ion-title>
+      </ion-list-header>
+  
+      <ion-item *ngFor="let tk of s_tracks" [hidden]="!tk.name.toLowerCase().includes(queryText)">
+        <span slot="start" class="dot"></span>
+        <ion-label>{{ tk.name }}</ion-label>
+        <ion-checkbox [(ngModel)]="tk.isChecked" checked="{{tk.isChecked}}" color="success"></ion-checkbox>
+      </ion-item>
+    </ion-list>
+  
+    <ion-list>
+      <ion-item color="danger" (click)="unselectAll()" detail="false" class="reset-filters">
+        Unselect All Tracks
+      </ion-item>
+    </ion-list>
+  </ion-content>
+  

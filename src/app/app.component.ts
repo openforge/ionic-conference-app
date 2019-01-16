@@ -17,26 +17,27 @@ export class AppComponent implements OnInit {
   appPages = [
     {
       title: 'Schedule',
-      url: '/app/tabs/schedule',
+      url: '/app/tabs/(schedule:schedule)',
       icon: 'calendar'
     },
     {
       title: 'Speakers',
-      url: '/app/tabs/speakers',
+      url: '/app/tabs/(speakers:speakers)',
       icon: 'contacts'
     },
     {
       title: 'Map',
-      url: '/app/tabs/map',
+      url: '/app/tabs/(map:map)',
       icon: 'map'
     },
     {
       title: 'About',
-      url: '/app/tabs/about',
+      url: '/app/tabs/(about:about)',
       icon: 'information-circle'
     }
   ];
   loggedIn = false;
+  keyword = '';
 
   constructor(
     private events: Events,
@@ -52,7 +53,9 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.checkLoginStatus();
+    this.userData.isLoggedIn().then(loggedIn => {
+      this.updateLoggedInStatus(loggedIn);
+    });
     this.listenForLoginEvents();
   }
 
@@ -63,15 +66,12 @@ export class AppComponent implements OnInit {
     });
   }
 
-  checkLoginStatus() {
-    return this.userData.isLoggedIn().then(loggedIn => {
-      return this.updateLoggedInStatus(loggedIn);
-    });
-  }
-
   updateLoggedInStatus(loggedIn: boolean) {
     setTimeout(() => {
       this.loggedIn = loggedIn;
+      this.userData.getUser().then(user => {
+        this.keyword = user ? user.username : '' ;
+      });
     }, 300);
   }
 
@@ -89,15 +89,23 @@ export class AppComponent implements OnInit {
     });
   }
 
+  navigate(url: string) {
+    return this.router.navigateByUrl(url);
+  }
+
   logout() {
     this.userData.logout().then(() => {
-      return this.router.navigateByUrl('/app/tabs/schedule');
+      return this.openTutorial();
     });
+  }
+
+  onSetup() {
+    this.router.navigateByUrl('/setup/tabs/(sessions:sessions)');
   }
 
   openTutorial() {
     this.menu.enable(false);
-    this.storage.set('ion_did_tutorial', false);
+    this.storage.set('ion_did_tutorial', 'false');
     this.router.navigateByUrl('/tutorial');
   }
 }

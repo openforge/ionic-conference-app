@@ -19,6 +19,9 @@
         <b>ionic conference app</b> is a practical preview of the ionic framework in action, and a demonstration of proper code
         use.
       </p>
+      <ion-buttons class="btn-right">
+        <ion-icon class="arrow-forward" name="arrow-forward" (click)="slides.slideNext()"></ion-icon>
+      </ion-buttons>
     </ion-slide>
 
     <ion-slide>
@@ -27,6 +30,10 @@
       <p>
         <b>Ionic Framework</b> is an open source SDK that enables developers to build high quality mobile apps with web technologies
         like HTML, CSS, and JavaScript.</p>
+      <ion-buttons class="btn-both">
+        <ion-icon class="arrow-back" name="arrow-back" (click)="slides.slidePrev()"></ion-icon>
+        <ion-icon class="arrow-forward" name="arrow-forward" (click)="slides.slideNext()"></ion-icon>
+      </ion-buttons>
     </ion-slide>
 
     <ion-slide>
@@ -35,6 +42,10 @@
       <p>
         <b>Ionic Pro</b> is a powerful set of services and features built on top of Ionic Framework that brings a totally new
         level of app development agility to mobile dev teams.</p>
+      <ion-buttons class="btn-both">
+        <ion-icon class="arrow-back" name="arrow-back" (click)="slides.slidePrev()"></ion-icon>
+        <ion-icon class="arrow-forward" name="arrow-forward" (click)="slides.slideNext()"></ion-icon>
+      </ion-buttons>
     </ion-slide>
 
     <ion-slide>
@@ -42,8 +53,11 @@
       <h2 class="slide-title">Ready to Play?</h2>
       <ion-button fill="clear" (click)="startApp()">
         Continue
-        <ion-icon slot="end" name="arrow-forward"></ion-icon>
+        <!-- <ion-icon slot="end" name="arrow-forward"></ion-icon> -->
       </ion-button>
+      <ion-buttons class="btn-left">
+        <ion-icon class="arrow-back" name="arrow-back" (click)="slides.slidePrev()"></ion-icon>
+      </ion-buttons>
     </ion-slide>
   </ion-slides>
 </ion-content>

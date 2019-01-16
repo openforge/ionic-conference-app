@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Date Period</ion-title>
+    <ion-buttons slot="end">
+      <ion-item (click)="onExit()">Cancel</ion-item>
+      <ion-item (click)="applySelection()">Save Period</ion-item>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <br>
+  <ion-title>Enter new Period to make Schedule.</ion-title>
+  <hr>
+  <ion-list>
+    <ion-item>
+      <ion-label>From : </ion-label>
+      <ion-datetime type="text"  [(ngModel)]="start"
+            displayFormat="YYYY/MM/DD"
+            (ngModelChange)="checkStartDate($event)"
+            min="{{minYear}}" max="{{maxYear}}"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>To : </ion-label>
+      <ion-datetime type="text"  [(ngModel)]="end"
+            displayFormat="YYYY/MM/DD"
+            (ngModelChange)="checkEndDate($event)"
+            min="{{minYear}}" max="{{maxYear}}"></ion-datetime>
+    </ion-item>
+  </ion-list>  
+</ion-content>

@@ -14,7 +14,7 @@
             Navigate
           </ion-list-header>
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item [routerLink]="p.url">
+            <ion-item button (click)="navigate(p.url)" [disabled]="!loggedIn">
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
                 {{p.title}}
@@ -73,7 +73,7 @@
           </ion-menu-toggle>
 
           <ion-menu-toggle auto-hide="false">
-            <ion-item routerLink="/support">
+            <ion-item button (click)="navigate('/support')" [disabled]='true'>
               <ion-icon slot="start" name="help"></ion-icon>
               <ion-label>
                 Support
@@ -91,7 +91,19 @@
           </ion-menu-toggle>
         </ion-list>
 
-        <ion-list>
+        <ion-list *ngIf="keyword === 'admin'">
+            <ion-list-header>
+              Configuration
+            </ion-list-header>
+            <ion-menu-toggle auto-hide="false">
+              <ion-item button (click)="onSetup()">
+                <ion-icon slot="start" name="hammer"></ion-icon>
+                <ion-label>Set Up</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ion-list>
+  
+        <ion-list *ngIf="keyword !== 'admin'">
           <ion-list-header>
             Tutorial
           </ion-list-header>

@@ -18,6 +18,32 @@ ion-toolbar {
   margin: 36px 0;
 }
 
+.btn-right {
+  float: right;
+  margin-top: 20px;
+}
+
+.btn-left {
+  margin-top: 50px;
+}
+
+.btn-both {
+  display: inline;
+}
+
+.arrow-forward {
+  float: right;
+  width: 30px;
+  margin-right: 20px;
+  font-size: 30px;
+}
+
+.arrow-back {
+  float: left;
+  margin-left: 20px;
+  font-size: 30px;
+}
+
 b {
   font-weight: 500;
 }

@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Speakers</ion-title>
+    <ion-buttons slot="end">
+      <ion-item [href]="'setup/tabs/(speaker:edit/'+ 'New'">Add New</ion-item>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar [(ngModel)]="queryText" placeholder="Search"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item-group *ngFor="let speaker of speakers">
+    <ion-item [hidden]="!speaker.name.toLowerCase().includes(queryText)"
+              [href]="'setup/tabs/(speaker:edit/'+ speaker.id">
+      <ion-avatar slot="start">
+        <img [src]="speaker.profilePic" alt="Speaker profile pic">
+      </ion-avatar>
+      {{speaker.name}} ({{ speaker.phone }})
+      <ion-buttons slot="end">
+        <ion-icon name="trash" color="danger" (click)="onConfirmToRemove(speaker)"></ion-icon>
+      </ion-buttons>
+    </ion-item>
+  </ion-item-group>
+</ion-content>
