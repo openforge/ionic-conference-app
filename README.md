@@ -53,7 +53,13 @@ All app preview screenshots were taken by running `ionic serve --lab` on a retin
 
 1. Un-comment [these lines](https://github.com/ionic-team/ionic2-app-base/blob/master/src/index.html#L21)
 2. Run `npm run ionic:build --prod`
-3. Push the `www` folder to your hosting service
+3. Install Firebase CLI tools `npm install -g firebase-tools`
+4. Sign in to Firebase `firebase login`
+5. Initialize the project `firebase init`
+6. Deploy to firebase `firebase deploy`, with the following options:
+    - What do you want to use as your public directory? `www`
+    - Configure as a single-page app (rewrite all urls to /index.html)? `Yes`
+    - File www/index.html already exists. Overwrite? `No`
 
 ### Android
 
