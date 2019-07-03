@@ -13,7 +13,7 @@ $categories: (
 
 @each $track, $value in map-remove($categories) {
   ion-item-sliding[track='#{$track}'] ion-label {
-    border-left: 2px solid $value;
+    border-left: 2px solid black;
     padding-left: 10px;
   }
 }

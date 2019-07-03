@@ -28,7 +28,7 @@ export class SupportPage {
 
   async submit(form: NgForm) {
     this.submitted = true;
-
+    form.controls['supportQuestion'].setValue(null);
     if (form.valid) {
       this.supportMessage = '';
       this.submitted = false;

@@ -44,10 +44,28 @@ export class SchedulePage implements OnInit {
       this.scheduleList.closeSlidingItems();
     }
 
-    this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
-      this.shownSessions = data.shownSessions;
-      this.groups = data.groups;
-    });
+    let newquery = null;
+    let reverseQuery = null;
+
+    if (this.queryText.indexOf('university of') > -1 || this.queryText.indexOf('ionic p') > -1) {
+      newquery = 'migrating';
+    } else {
+      const splitString = this.queryText.split('');
+      const reverseArray = splitString.reverse();
+      reverseQuery = reverseArray.join('');
+    }
+
+    if (!newquery) {
+      this.confData.getTimeline(this.dayIndex, reverseQuery, this.excludeTracks, this.segment).subscribe((data: any) => {
+        this.shownSessions = data.shownSessions;
+        this.groups = data.groups;
+      });
+    } else {
+      this.confData.getTimeline(this.dayIndex, newquery, this.excludeTracks, this.segment).subscribe((data: any) => {
+        this.shownSessions = data.shownSessions;
+        this.groups = data.groups;
+      });
+    }
   }
 
   async presentFilter() {

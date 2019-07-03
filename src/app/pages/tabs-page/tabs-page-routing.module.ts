@@ -50,12 +50,8 @@ const routes: Routes = [
       },
       {
         path: 'about',
-        children: [
-          {
-            path: '',
-            loadChildren: '../about/about.module#AboutModule'
-          }
-        ]
+        redirectTo: '/app/tabs/schedule',
+        pathMatch: 'full'
       },
       {
         path: '',

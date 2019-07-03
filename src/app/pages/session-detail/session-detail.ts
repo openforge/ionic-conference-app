@@ -23,8 +23,7 @@ export class SessionDetailPage {
   }
   toggleFavorite() {
     if (this.userProvider.hasFavorite(this.session.name)) {
-      this.userProvider.removeFavorite(this.session.name);
-      this.isFavorite = false;
+      this.isFavorite = true;
     } else {
       this.userProvider.addFavorite(this.session.name);
       this.isFavorite = true;
